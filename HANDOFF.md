@@ -4,7 +4,7 @@ Shared design language for SymbioticAudio apps: **VizDAW** (~/workspace/vizdaw, 
 
 ## What will live here
 - **Tokens** — colours, type scale, spacing, corner radii, stroke weights in one JSON file, defined per theme. Swift code is generated from it; non-Swift UIs (Rust/web) read the JSON directly. VizDAW's themes are listed under Status below.
-- **Icons** — ~40 monoline glyphs owned by the user (designed for them by a graphic-designer friend, 2006). Source PSDs: ~/workspace/vizdaw/sources/Symbols_Large.psd and "Symbols 2 white.psd" (raster). They are being redrawn as stroked SVGs (one consistent stroke weight), then exported as vector PDF template images (tinted by system colours) behind a typed Swift API, e.g. `SymbolIcon.loop`. The user assigns each glyph's meaning from a numbered sheet.
+- **Icons** — ~40 monoline glyphs owned by the user (designed for them by a graphic-designer friend, 2006). Source PSDs: ~/workspace/vizdaw/sources/Symbols_Large.psd and "Symbols 2 white.psd" (raster). They are being redrawn as stroked SVGs (one consistent stroke weight), then generated into Swift drawing code (no PDFs or resource files) behind typed `IconRole` and `Icon`/`NSImage.icon` APIs. Status below. The user assigns each glyph's meaning from a numbered sheet.
 - **Guide** — a short page on how icons, meters, knobs and panels should look so both apps stay consistent.
 
 ## How each app consumes it
@@ -12,7 +12,7 @@ Shared design language for SymbioticAudio apps: **VizDAW** (~/workspace/vizdaw, 
 - Other UI stacks (CLAP/cross-platform, Rust, web): use the JSON tokens and SVG icons directly.
 
 ## Open questions (owner to answer)
-- Licence: artwork (glyphs, SVG, PDF) is ALL RIGHTS RESERVED by the owner — branding identity; not reusable even though VizDAW and Mutable are open source. Proposed: package code + tokens MIT so open-source apps can link it; apps keep a fallback icon set so forks build without the branded art.
+- Licence: artwork (glyphs, SVG, generated drawing code) is ALL RIGHTS RESERVED by the owner — branding identity; not reusable even though VizDAW and Mutable are open source. Decided: package code, tokens and the standard icons are MIT (`LICENSE`); the branded artwork stays all rights reserved (`ASSETS-LICENSE`) in the separate `SymbioticBrand` product; forks build without it using the standard icons.
 - Mutable's UI stack (AU v3 + SwiftUI/AppKit, CLAP, other?).
 
 ## Coordination

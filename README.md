@@ -80,7 +80,9 @@ ContentView().symbioticTheme(.classicLight)
 
 For AppKit, set the window's `appearance` (or, in a plugin, the
 `NSHostingView`'s) to `NSAppearance(named: theme.appearance.nsAppearanceName)`
-and pass `theme:` to `NSImage.icon`.
+and pass `theme:` to `NSImage.icon`. To honour Increase Contrast, use
+`theme.appearance.nsAppearanceName(highContrast: NSWorkspace.shared.accessibilityDisplayShouldIncreaseContrast)`
+instead.
 
 ## Sources and generated files
 
@@ -105,8 +107,11 @@ scripts/swift.sh test                  # Command Line Tools: export DEVELOPER_DI
 Generated Swift is committed; apps never run the generator. CI regenerates
 (including the contact sheet) and fails on any difference, runs the Python
 and Swift tests on Xcode pinned to a Swift 6.2 or later toolchain, and builds
-`SymbioticTokens` and `SymbioticIcons` alone in a clean scratch folder to
-prove that a fork without `SymbioticBrand` builds.
+the `SymbioticTokens` and `SymbioticIcons` targets (`swift build --target`,
+not `--product`, which SwiftPM ignores for automatic library products and
+then builds everything) in a clean scratch folder, failing if any
+`SymbioticBrand` module or object appears, to prove that a fork without
+`SymbioticBrand` builds.
 
 - `tokens/contrast.md` lists each text/surface pair declared in
   `tokens.json` against WCAG AA per theme; warnings do not fail the build.
@@ -132,6 +137,10 @@ Automated tests cannot judge looks. Before tagging a release:
 ## Contents
 
 - `source-art/` — the master glyph artwork (Photoshop).
+- `tokens/` — `tokens.json` (the single source of every theme) and the
+  generated `contrast.md`.
+- `tools/` — the stdlib-Python generator, `contact_sheet.py`,
+  `references.py` and their tests.
 - `icons/` — the glyphs as 24-unit monoline SVGs, their roles
   (`glyphs.json`), the role catalogue (`roles.json`) and a contact sheet.
 - `icons/standard/` — 107 standard icons (transport, edit, app, audio,

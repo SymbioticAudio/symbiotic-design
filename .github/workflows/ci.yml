@@ -36,8 +36,15 @@ jobs:
           scripts/swift.sh build
           scripts/swift.sh test
 
-      - name: MIT products build without SymbioticBrand (what a fork builds)
+      - name: MIT targets build without SymbioticBrand (what a fork builds)
         run: |
           scratch="$(mktemp -d)/build"
-          swift build --package-path . --scratch-path "$scratch" --product SymbioticTokens
-          swift build --package-path . --scratch-path "$scratch" --product SymbioticIcons
+          swift build --package-path . --scratch-path "$scratch" --target SymbioticTokens
+          swift build --package-path . --scratch-path "$scratch" --target SymbioticIcons
+          # --target builds only the named target and its dependencies; fail if Brand was built anyway.
+          brand="$(find "$scratch" \( -name 'SymbioticBrand*.o' -o -name 'SymbioticBrand*.swiftmodule' \))"
+          if [ -n "$brand" ]; then
+            echo "SymbioticBrand was built:" >&2
+            echo "$brand" >&2
+            exit 1
+          fi
