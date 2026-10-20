@@ -54,9 +54,10 @@ def render(svg_path, png_path, work, attempts=3):
                             f"--user-data-dir={work}/profile-{svg_path.stem}-{attempt}",
                             f"--screenshot={png_path}", html.as_uri()],
                            check=True, capture_output=True, timeout=60)
-        except subprocess.TimeoutExpired:
-            # Chrome sometimes writes the screenshot and then fails to exit;
-            # subprocess.run has killed it. Keep the PNG if it is complete.
+        except (subprocess.TimeoutExpired, subprocess.CalledProcessError):
+            # Chrome sometimes writes the screenshot and then fails to exit
+            # (subprocess.run has killed it) or exits non-zero. Keep the PNG
+            # if it is complete; otherwise try again.
             pass
         if _complete_png(png_path):
             return png_path
