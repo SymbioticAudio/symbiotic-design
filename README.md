@@ -20,3 +20,7 @@ VizDAW and EG13: design tokens, icons and a short visual guide.
 
 Coming next: per-theme tokens (JSON → Swift), a standard icon set
 (play, stop, record…) under MIT, vector PDF exports and a Swift package.
+
+## Special thanks
+
+Special thanks to **Clayton Hibbert** for the original glyph designs.
