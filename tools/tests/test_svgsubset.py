@@ -95,6 +95,14 @@ class Paths(unittest.TestCase):
         ops = self.ops("M2 2 l1 0 z m1 1 l1 0")
         self.assertEqual(ops[3], ("M", 3, 3))
 
+    def test_drawing_after_close_starts_at_subpath_start(self):
+        ops = self.ops("M0 0 L5 0 L5 5 Z L1 1")
+        self.assertEqual(ops[3:], [("Z",), ("M", 0, 0), ("L", 1, 1)])
+        ops = self.ops("M2 2 l1 0 z m1 1 l1 0 z h4")
+        self.assertEqual(ops[-2:], [("M", 3, 3), ("L", 7, 3)])
+        shapes = s.parse_svg_text(svg('<path d="M0 0 L5 0 L5 5 Z L1 1"/>'))
+        close(self, s.bounds(shapes), (-0.6, -0.6, 5.6, 5.6))
+
     def test_packed_arc_flags(self):
         a = self.ops("M0 0 a1 1 0 011 1")
         b = self.ops("M0 0 a1 1 0 0 1 1 1")
@@ -181,8 +189,16 @@ class Transforms(unittest.TestCase):
         self.assertAlmostEqual(shape.weight, 2.0)
 
     def test_skew_is_rejected(self):
-        with self.assertRaisesRegex(s.SvgError, "skewX"):
-            s.parse_svg_text(svg('<g transform="skewX(10)"><line x1="0" y1="0" x2="1" y2="1"/></g>'))
+        for tr in ("skewX(10)", "skewY(10)"):
+            with self.subTest(tr):
+                with self.assertRaisesRegex(s.SvgError, "skew or non-uniform"):
+                    s.parse_svg_text(svg(f'<g transform="{tr}"><line x1="0" y1="0" x2="1" y2="1"/></g>'))
+
+    def test_degenerate_transforms_are_rejected(self):
+        for tr in ("scale(0)", "matrix(0 0 0 0 1 1)", "scale(1 0)"):
+            with self.subTest(tr):
+                with self.assertRaisesRegex(s.SvgError, "transform"):
+                    s.parse_svg_text(svg(f'<g transform="{tr}"><line x1="0" y1="0" x2="1" y2="1"/></g>'))
 
     def test_skew_matrix_and_non_uniform_scale_are_rejected(self):
         for tr in ("matrix(1 0 0.18 1 0 0)", "scale(2 1)"):
@@ -195,6 +211,10 @@ class Errors(unittest.TestCase):
     def bad(self, body, pattern, whole=None):
         with self.assertRaisesRegex(s.SvgError, pattern):
             s.parse_svg_text(whole if whole is not None else svg(body))
+
+    def test_text_after_an_element(self):
+        self.bad('<line x1="0" y1="0" x2="1" y2="1"/>junk', "text")
+        self.bad('<g><line x1="0" y1="0" x2="1" y2="1"/>junk</g>', "text")
 
     def test_unsupported_element(self):
         self.bad('<text>hi</text>', "unsupported element <text>")

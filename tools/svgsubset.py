@@ -127,6 +127,9 @@ def parse_transform(text):
                 step = multiply(multiply((1, 0, 0, 1, cx, cy), step), (1, 0, 0, 1, -cx, -cy))
         elif name == "matrix" and len(args) == 6:
             step = tuple(args)
+        elif name in ("skewX", "skewY"):
+            raise SvgError("transform: only translate, rotate, uniform scale and mirror "
+                           "are supported (no skew or non-uniform scale)")
         else:
             raise SvgError(f"transform: unsupported {name}({t.group(2).strip()})")
         m = multiply(m, step)
@@ -277,7 +280,24 @@ def parse_path(d):
                 ops.append(("C",) + seg)
             cx, cy = x, y
             last_c2 = last_q = None
-    return ops
+    return _reopen_after_close(ops)
+
+
+def _reopen_after_close(ops):
+    """SVG: a drawing command after Z starts a new subpath at the closed one's start."""
+    out = []
+    start = None
+    closed = False
+    for op in ops:
+        if op[0] == "M":
+            start, closed = (op[1], op[2]), False
+        elif op[0] == "Z":
+            closed = True
+        elif closed and start is not None:
+            out.append(("M",) + start)
+            closed = False
+        out.append(op)
+    return out
 
 
 def _path_tokens(d):
@@ -446,6 +466,8 @@ def _walk(el, matrix, style, shapes):
                 raise SvgError(f"<{tag}> attribute {key!r} is not supported")
         if (child.text or "").strip():
             raise SvgError(f"<{tag}> must not contain text")
+        if (child.tail or "").strip():
+            raise SvgError(f"text after <{tag}> is not supported")
         s = _style(child, style, tag)
         if tag == "g":
             m = matrix
@@ -455,6 +477,8 @@ def _walk(el, matrix, style, shapes):
                 if abs(a * a + b * b - (c * c + d * d)) >= 1e-9 or abs(a * c + b * d) >= 1e-9:
                     raise SvgError("transform: only translate, rotate, uniform scale and mirror "
                                    "are supported (no skew or non-uniform scale)")
+                if abs(a * d - b * c) < 1e-12:
+                    raise SvgError("transform: degenerate (zero scale collapses the drawing)")
             _walk(child, m, s, shapes)
             continue
         if len(child):
