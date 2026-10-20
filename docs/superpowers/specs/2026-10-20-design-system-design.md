@@ -9,10 +9,10 @@ One design language for SymbioticAudio's apps: **VizDAW** (Rust + Swift/AppKit D
 Success means:
 - both apps draw every icon and colour through this package, by role, not by file name;
 - the owner's branded artwork stays all rights reserved, and an open-source fork that drops it still builds and shows a complete standard icon set;
-- the four planned themes exist from the first release with starter values, and their final visual design (VizDAW SP7) changes values only, never the code that uses them.
+- the five planned themes exist from the first release with starter values, and their final visual design (VizDAW SP7) changes values only, never the code that uses them.
 
 Owner decisions this spec rests on:
-- Scope **A**: token structure and all four themes now; starter values; real palettes later.
+- Scope **A**: token structure and all five themes now; starter values; real palettes later.
 - Icons as **generated code** (approach 1), split into three products along the licence line.
 - Branded artwork © Westlee Latta, all rights reserved (`ASSETS-LICENSE`); code, tokens and standard icons MIT (`LICENSE`). Credit: original glyph designs by Clayton Hibbert.
 - Standard (industry-conventional) icons are drawn in-house in the house style; SF Symbols are never shipped as assets.
@@ -24,12 +24,14 @@ Out of scope: wiring the package into VizDAW (a later VizDAW plan) or EG13 (its 
 ### 2.1 Source
 `tokens/tokens.json` holds:
 - `tokens`: every token name, grouped by kind, each with a one-line description;
-- `themes`: four themes, each with `id`, `appearance` (`light` | `dark`) and a value for **every** token.
+- `themes`: five themes, each with `id`, `appearance` (`light` | `dark`) and a value for **every** token.
 
 The generator refuses to build if any theme lacks a token or defines an unknown one.
 
 ### 2.2 Theme IDs
-Neutral IDs; no vendor names anywhere in code or files: `classic-light`, `studio-dark`, `flat`, `console`. User-facing names are chosen in SP7.
+Neutral IDs; no vendor names anywhere in code or files: `classic-light`, `studio-dark`, `flat`, `console`, `symbiotic`. User-facing names are chosen in SP7.
+
+`symbiotic` is the owner's flat blue-and-gold look from symbioticaudio.org; it is offered as a theme, never the default.
 
 ### 2.3 Token groups
 - **surface**: window, panel, raised, inset, separator, selection, focusRing
@@ -38,8 +40,9 @@ Neutral IDs; no vendor names anywhere in code or files: `classic-light`, `studio
 - **state**: record, play, solo, mute, warning, error, offline
 - **meter**: background, low, mid, high, clip
 - **graph**: line, fill, grid, handle, handleSelected (waveforms, envelopes, LFO, scope)
-- **control** (colour by function, present in all four themes): gain, eqLow, eqLowMid, eqHighMid, eqHigh, send, pan, dynamics, filter
+- **control** (colour by function, present in every theme): gain, eqLow, eqLowMid, eqHighMid, eqHigh, send, pan, dynamics, filter
 - **strip** (colour by type): channel, instrument, auxReturn, bus, master
+- **brand** (theme-independent: the same values in every theme; the symbioticaudio.org palette): gold, cyan, cyanInk, ink, paper, rule
 - **spacing**: xxs, xs, s, m, l, xl (points)
 - **radius**: none, s, m, l (points)
 - **iconStroke**: s16, s24, s32 (stroke width in points at each icon size)
@@ -48,12 +51,12 @@ Neutral IDs; no vendor names anywhere in code or files: `classic-light`, `studio
 ### 2.4 Values
 - Colours are `#RRGGBB` or `#RRGGBBAA` (sRGB).
 - A colour may instead be `{ "system": "<macOS semantic colour name>", "fallback": "#RRGGBB" }`. Swift uses the system colour; other platforms use the fallback.
-- Starter values: `classic-light` and `studio-dark` track macOS system colours with fallbacks; `flat` and `console` get rough placeholder palettes, clearly marked as placeholders in the file.
+- Starter values: `classic-light` and `studio-dark` track macOS system colours with fallbacks; `flat` and `console` get rough placeholder palettes, clearly marked as placeholders in the file; `symbiotic` takes its values from the symbioticaudio.org palette.
 
 ### 2.5 Swift output (product SymbioticTokens, MIT)
 - A generated `Theme` struct with typed groups: `theme.meter.clip`, `theme.control.eqLow`, `theme.spacing.m`.
 - Colours expose both `SwiftUI.Color` and `NSColor`.
-- `Theme.classicLight`, `.studioDark`, `.flat`, `.console`, and `Theme.all`.
+- `Theme.classicLight`, `.studioDark`, `.flat`, `.console`, `.symbiotic`, and `Theme.all`.
 - A SwiftUI environment value `\.symbioticTheme` (default `.classicLight` or `.studioDark` by appearance).
 
 ### 2.6 Checks
