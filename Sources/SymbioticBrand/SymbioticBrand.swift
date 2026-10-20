@@ -1,5 +1,6 @@
 // SymbioticAudio branded artwork
 // Copyright (c) 2006-2026 Westlee Latta. All rights reserved.
+// Original glyph designs by Clayton Hibbert.
 //
 // The following files are proprietary artwork and brand identity of
 // SymbioticAudio. They are NOT licensed under the MIT licence in LICENSE, nor
@@ -15,8 +16,7 @@
 //     remains all rights reserved)
 //   - Sources/SymbioticBrand/ (the glyphs as Swift drawing code, generated and
 //     hand-written)
-//   - Tests/SymbioticBrandTests/ (brand tests and glyph reference PNGs, when
-//     added)
+//   - Tests/SymbioticBrandTests/ (brand tests and glyph reference PNGs)
 //   - logo/                (SymbioticAudio logo, when added)
 //   - any PDF, PNG or other rendering generated from the files above
 //
