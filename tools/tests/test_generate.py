@@ -120,3 +120,12 @@ class Roles(Scratch):
         result = self.run_generate()
         self.assertEqual(result.returncode, 1)
         self.assertIn("glyph-06 is not confirmed by the owner", result.stderr)
+
+    def test_designer_name_error_names_glyphs_json(self):
+        def bad(d):
+            d[0]["designerName"] = "a\nb"
+        self.edit_json("icons/glyphs.json", bad)
+        result = self.run_generate()
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("error: glyphs.json: glyph-01: designerName", result.stderr)
+        self.assertNotIn("roles.json: glyphs.json", result.stderr)

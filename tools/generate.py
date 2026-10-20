@@ -62,7 +62,8 @@ def main():
         return 1
     except rolelib.RoleError as e:
         for p in e.problems:
-            print(f"error: roles.json: {p}", file=sys.stderr)
+            source = "" if p.startswith("glyphs.json:") else "roles.json: "
+            print(f"error: {source}{p}", file=sys.stderr)
         return 1
     for rid, name in missing:
         print(f"note: role {rid} needs icons/standard/{name}.svg (listed in icons/coverage.md)")

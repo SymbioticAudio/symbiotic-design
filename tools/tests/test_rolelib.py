@@ -91,9 +91,35 @@ class Hardening(unittest.TestCase):
         glyphs[0]["designerName"] = "envelope"
         self.assertEqual(len(r.validate(catalogue(), glyphs)), 3)
         glyphs[1]["designerName"] = 7
-        self.assertIn("glyph-06: designerName must be a one-line string", self.problems(catalogue(), glyphs))
+        self.assertIn("glyphs.json: glyph-06: designerName must be a one-line string", self.problems(catalogue(), glyphs))
         glyphs[1]["designerName"] = "a\nb"
-        self.assertIn("glyph-06: designerName must be a one-line string", self.problems(catalogue(), glyphs))
+        self.assertIn("glyphs.json: glyph-06: designerName must be a one-line string", self.problems(catalogue(), glyphs))
+
+
+class FixRound1(unittest.TestCase):
+    def problems(self, data):
+        with self.assertRaises(r.RoleError) as ctx:
+            r.validate(data, GLYPHS)
+        return ctx.exception.problems
+
+    def test_stray_hyphens_in_ids(self):
+        for bad in ["a-.b", "a--b.c", "-a.b", "a.b-", "a.-b", "a.b--c", "1a.b"]:
+            p = self.problems(catalogue({"id": bad, "standard": "play", "label": "Z"}))
+            self.assertTrue(any("dotted lower-case" in x for x in p), bad)
+
+    def test_labels_must_be_unique(self):
+        p = self.problems(catalogue({"id": "a.b", "standard": "play", "label": "Play"}))
+        self.assertIn("a.b: label 'Play' is already used by transport.play", p)
+
+    def test_standard_name_grammar(self):
+        for bad in ["../x", "has space", "Play", "a--b", "-a", "a/b", "x\n"]:
+            p = self.problems(catalogue({"id": "a.b", "standard": bad, "label": "Z"}))
+            self.assertIn(f"a.b: standard icon name {bad!r} is not a lower-case hyphenated name", p)
+
+    def test_repository_has_part_single_and_distinct_mono(self):
+        roles = {x["id"]: x for x in r.load_json(ROOT / "icons" / "roles.json")["roles"]}
+        self.assertEqual(roles["part.single"]["label"], "Single")
+        self.assertNotEqual(roles["audio.mono"]["label"], roles["voice.mono"]["label"])
 
 
 class Coverage(unittest.TestCase):

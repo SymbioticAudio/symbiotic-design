@@ -4,7 +4,8 @@ import re
 
 from swiftgen_common import lower_camel
 
-ROLE_ID = re.compile(r"[a-z][a-z0-9-]*(\.[a-z0-9]+(-[a-z0-9]+)*)+")
+ROLE_ID = re.compile(r"[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)+")
+ICON_NAME = re.compile(r"[a-z][a-z0-9]*(?:-[a-z0-9]+)*")
 ONE_LINE = re.compile(r"[^\x00-\x1f\x7f-\x9f\u2028\u2029]*")
 LOGO = "brand.logo"
 CONFIRMED = "confirmed by owner"
@@ -34,9 +35,10 @@ def validate(data, glyphs):
     for g in glyphs:
         if "designerName" in g and not (isinstance(g["designerName"], str) and g["designerName"].strip()
                                         and ONE_LINE.fullmatch(g["designerName"])):
-            problems.append(f"{g['id']}: designerName must be a one-line string")
+            problems.append(f"glyphs.json: {g['id']}: designerName must be a one-line string")
     seen = {}
     swift_names = {}
+    labels = {}
     for i, role in enumerate(data["roles"]):
         rid = role.get("id") if isinstance(role, dict) else None
         where = rid or f"roles[{i}]"
@@ -59,11 +61,18 @@ def validate(data, glyphs):
             problems.append(f"{rid}: needs a label")
         elif not ONE_LINE.fullmatch(role["label"]):
             problems.append(f"{rid}: label must be one line without control characters")
+        else:
+            if role["label"] in labels:
+                problems.append(f"{rid}: label {role['label']!r} is already used by {labels[role['label']]}")
+            else:
+                labels[role["label"]] = rid
         if rid == LOGO:
             if "standard" in role:
                 problems.append(f"{LOGO}: must not name a standard icon (it falls back to the wordmark)")
         elif not isinstance(role.get("standard"), str) or not role["standard"]:
             problems.append(f"{rid}: needs a standard icon")
+        elif not ICON_NAME.fullmatch(role["standard"]):
+            problems.append(f"{rid}: standard icon name {role['standard']!r} is not a lower-case hyphenated name")
         if "brand" in role:
             brand = role["brand"]
             if brand not in confidence:
