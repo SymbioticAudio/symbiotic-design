@@ -9,7 +9,8 @@ VizDAW and EG13, which are GPL-3.0):
   - source-art/          (master artwork, Photoshop files)
   - icons/svg/glyph-*    (glyph icons redrawn from the master artwork)
   - icons/glyphs.json    (descriptions and the designer's names of the glyphs)
-  - icons/coverage.md    (generated report that describes the glyphs)
+  - icons/coverage.md    (generated report that describes the glyphs; the
+    whole file, including its rows for standard icons)
   - icons/contact-sheet.html (embeds the glyph artwork; its glyph section
     remains all rights reserved)
   - Sources/SymbioticBrand/ (the glyphs as Swift drawing code, generated and

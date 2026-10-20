@@ -8,6 +8,12 @@ from swiftgen_icons import drawings_enum
 
 OUT = "Sources/SymbioticBrand/Generated"
 PRODUCT = "Sources/SymbioticBrand"
+TESTS = "Tests/SymbioticBrandTests"
+
+
+def stamped_sources(root):
+    """Every .swift file under the brand product and its tests, at any depth (generated ones included)."""
+    return sorted(p for d in (PRODUCT, TESTS) for p in (root / d).rglob("*.swift"))
 
 
 def header(assets_license):

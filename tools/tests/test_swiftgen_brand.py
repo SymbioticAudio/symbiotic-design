@@ -33,11 +33,12 @@ class BrandSwift(unittest.TestCase):
         self.assertNotIn("transportPlay", roles)
 
     def test_repository_sources_carry_the_notice(self):
+        """Every .swift under Sources/SymbioticBrand/ and Tests/SymbioticBrandTests/, at any depth."""
         full = c.license_comment(self.notice)
-        sources = sorted((ROOT / "Sources" / "SymbioticBrand").rglob("*.swift"))
-        self.assertTrue(sources)
-        for path in sources:
-            with self.subTest(path.name):
+        for folder in ("Sources/SymbioticBrand", "Tests/SymbioticBrandTests"):
+            self.assertTrue(sorted((ROOT / folder).rglob("*.swift")), folder)
+        for path in g.stamped_sources(ROOT):
+            with self.subTest(str(path.relative_to(ROOT))):
                 self.assertTrue(path.read_text(encoding="utf-8").startswith(full))
 
     def test_assets_license_lists_the_brand_paths(self):

@@ -3,7 +3,8 @@
 
 Usage: python3 tools/generate.py
 Writes tokens/contrast.md, icons/coverage.md and Sources/*/Generated/, and
-restamps the ASSETS-LICENSE notice at the top of hand-written SymbioticBrand Swift.
+restamps the ASSETS-LICENSE notice at the top of hand-written Swift under
+Sources/SymbioticBrand/ and Tests/SymbioticBrandTests/ (any depth).
 Exit status 1 (and nothing written) if a source is invalid. If a role's
 standard icon has no SVG yet, icons/coverage.md is still written (it lists
 what to draw) but no Swift is.
@@ -70,8 +71,10 @@ def icons_step():
         files.update(swiftgen_icons.generate(standard, roles))
         assets_license = (ROOT / "ASSETS-LICENSE").read_text(encoding="utf-8")
         files.update(swiftgen_brand.generate(brand, roles, assets_license))
-        for path in sorted((ROOT / swiftgen_brand.PRODUCT).glob("*.swift")):
-            rel = str(path.relative_to(ROOT))
+        for path in swiftgen_brand.stamped_sources(ROOT):
+            rel = path.relative_to(ROOT).as_posix()
+            if rel.startswith(swiftgen_brand.OUT + "/"):
+                continue
             try:
                 files[rel] = swiftgen_brand.restamp(path.read_text(encoding="utf-8"), assets_license)
             except ValueError as e:

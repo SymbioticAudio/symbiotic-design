@@ -11,7 +11,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 import swiftgen_common as c  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
-COPY = ["tools", "tokens", "icons", "Sources", "ASSETS-LICENSE"]
+COPY = ["tools", "tokens", "icons", "Sources", "Tests", "ASSETS-LICENSE"]
 
 
 class Scratch(unittest.TestCase):
@@ -158,3 +158,26 @@ class Icons(Scratch):
         result = self.run_generate()
         self.assertEqual(result.returncode, 1)
         self.assertIn("orphan", result.stderr)
+
+
+class Brand(Scratch):
+    def test_hand_written_brand_swift_in_subfolders_gets_the_notice(self):
+        notice = c.license_comment((self.root / "ASSETS-LICENSE").read_text(encoding="utf-8"))
+        rels = ["Sources/SymbioticBrand/Support/Extra.swift", "Tests/SymbioticBrandTests/Sub/ExtraTests.swift"]
+        for rel in rels:
+            path = self.root / rel
+            path.parent.mkdir(parents=True)
+            path.write_text("// stale notice\n\nimport SymbioticIcons\n", encoding="utf-8")
+        result = self.run_generate()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        for rel in rels:
+            with self.subTest(rel):
+                self.assertEqual((self.root / rel).read_text(encoding="utf-8"), notice + "\nimport SymbioticIcons\n")
+
+    def test_brand_swift_without_a_header_fails_and_writes_nothing(self):
+        (self.root / "Sources" / "SymbioticBrand" / "Bad.swift").write_text("import SymbioticIcons\n", encoding="utf-8")
+        before = self.snapshot()
+        result = self.run_generate()
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("Sources/SymbioticBrand/Bad.swift", result.stderr)
+        self.assertEqual(self.snapshot(), before)
