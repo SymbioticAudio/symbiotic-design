@@ -97,7 +97,7 @@ The generator writes `icons/coverage.md`:
 ## 4. Repository layout and tooling
 
 ```
-Package.swift                    swift-tools 6.0, macOS 14; products SymbioticTokens, SymbioticIcons, SymbioticBrand
+Package.swift                    swift-tools 6.0, macOS 13; products SymbioticTokens, SymbioticIcons, SymbioticBrand
 tokens/tokens.json
 tokens/contrast.md (generated)
 icons/svg/, icons/standard/, icons/glyphs.json, icons/standard.json, icons/roles.json, icons/coverage.md
@@ -112,7 +112,7 @@ Tests/...                        Swift tests; tools/tests/ Python tests
 
 - Generated Swift is committed; apps never run the generator, and no SwiftPM build plugins are used.
 - Swift builds and tests run with the Command Line Tools (`DEVELOPER_DIR=/Library/Developer/CommandLineTools`); the Xcode licence is not accepted on the development Mac.
-- EG13's minimum macOS is confirmed with its session; if it is lower than 14, the package floor is lowered to match.
+- Floor macOS 13 (EG13's deployment target, confirmed 2026-10-20). No macOS 14-only APIs; anything that needs 14 sits behind `if #available(macOS 14, *)` with a macOS 13 fallback.
 
 ## 5. Testing
 
