@@ -363,13 +363,13 @@
     "id": "headphones-left",
     "name": "Headphones left",
     "category": "audio",
-    "description": "Left ear cup with half the headband"
+    "description": "Headphones with the left cup filled (left channel)"
   },
   {
     "id": "headphones-right",
     "name": "Headphones right",
     "category": "audio",
-    "description": "Right ear cup with half the headband"
+    "description": "Headphones with the right cup filled (right channel)"
   },
   {
     "id": "arrangement",
@@ -399,7 +399,7 @@
     "id": "drum-grid",
     "name": "Drum grid",
     "category": "editor",
-    "description": "Step grid of squares, some filled (hits)"
+    "description": "Three by three step grid with a few steps on (drum pattern)"
   },
   {
     "id": "treble-clef",
@@ -465,13 +465,13 @@
     "id": "expand",
     "name": "Expand",
     "category": "app",
-    "description": "Two arrows pointing out to opposite corners"
+    "description": "Arrows pointing up and down away from a line (taller rows)"
   },
   {
     "id": "collapse",
     "name": "Collapse",
     "category": "app",
-    "description": "Two arrows pointing in from opposite corners"
+    "description": "Arrows pointing down and up toward a line (shorter rows)"
   },
   {
     "id": "alert-circle",
@@ -483,7 +483,7 @@
     "id": "status-dot",
     "name": "Status dot",
     "category": "app",
-    "description": "Small solid dot (status indicator)"
+    "description": "Small solid dot, smaller than record; give it a semantic status colour"
   },
   {
     "id": "speaker-off",
@@ -531,7 +531,7 @@
     "id": "mono",
     "name": "Mono",
     "category": "audio",
-    "description": "One ring (one channel)"
+    "description": "Loudspeaker cone seen from the front: ring with a solid centre (one channel)"
   },
   {
     "id": "stereo",
@@ -561,19 +561,19 @@
     "id": "voice-poly",
     "name": "Poly",
     "category": "audio",
-    "description": "Three stacked note heads on one stem (polyphonic)"
+    "description": "Three filled note heads stacked on one stem (a chord: polyphonic)"
   },
   {
     "id": "voice-mono",
     "name": "Mono voice",
     "category": "audio",
-    "description": "One note head on a stem (monophonic)"
+    "description": "One filled note head on a stem (monophonic)"
   },
   {
     "id": "voice-legato",
     "name": "Legato",
     "category": "audio",
-    "description": "Two note heads joined by a slur"
+    "description": "Two stemmed notes at different pitches joined by a slur beneath (legato)"
   },
   {
     "id": "oscillator",
@@ -627,7 +627,7 @@
     "id": "layer",
     "name": "Layer",
     "category": "audio",
-    "description": "Two stacked layers: a diamond over a chevron"
+    "description": "Two boxes stacked one behind the other (two parts over the same keys)"
   },
   {
     "id": "split",

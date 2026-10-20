@@ -1,6 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="butt" stroke-linejoin="miter">
-  <polyline points="5.6 10.4 5.6 5.6 10.4 5.6"/>
-  <line x1="5.6" y1="5.6" x2="10.6" y2="10.6"/>
-  <polyline points="13.6 18.4 18.4 18.4 18.4 13.6"/>
-  <line x1="18.4" y1="18.4" x2="13.4" y2="13.4"/>
+  <line x1="5" y1="12" x2="19" y2="12"/>
+  <line x1="12" y1="10" x2="12" y2="5.2"/>
+  <polyline points="9.4 7.2 12 4.6 14.6 7.2"/>
+  <line x1="12" y1="14" x2="12" y2="18.8"/>
+  <polyline points="9.4 16.8 12 19.4 14.6 16.8"/>
 </svg>
