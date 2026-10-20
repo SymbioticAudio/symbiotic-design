@@ -6,6 +6,12 @@ def svg(n,size,title=False):
     s=s.replace('width="24" height="24"',f'width="{size}" height="{size}" aria-hidden="true" focusable="false"')
     s=s.replace(' xmlns="http://www.w3.org/2000/svg"','')
     return re.sub(r'\n\s*','',s)
+def std_svg(name,size):
+    s=open(f'{D}/standard/{name}.svg').read().strip()
+    s=s.replace('width="24" height="24"',f'width="{size}" height="{size}" aria-hidden="true" focusable="false"')
+    s=s.replace(' xmlns="http://www.w3.org/2000/svg"','')
+    return re.sub(r'\n\s*','',s)
+std=json.load(open(f'{D}/standard.json'))
 cards=[]
 for g in meta:
     n=int(g['id'][-2:])
@@ -19,6 +25,17 @@ def strip(size,theme):
     items=''.join(f'<span class="s" title="glyph-{n:02d}">{svg(n,size)}</span>' for n in range(1,42))
     return f'<div class="strip {theme}"><span class="sz">{size}px<br>{theme}</span><div class="row">{items}</div></div>'
 strips=''.join(strip(s,t) for t in ('light','dark') for s in (16,24,32))
+std_cards=[]
+for g in std:
+    std_cards.append(f'''<article class="card">
+  <div class="tiles"><div class="tile light">{std_svg(g['id'],96)}</div><div class="tile dark">{std_svg(g['id'],96)}</div></div>
+  <div class="meta"><div class="id">{g['id']} <span class="pos">{g['category']}</span></div>
+  <p class="desc">{html.escape(g['description'])}</p></div>
+</article>''')
+def std_strip(size,theme):
+    items=''.join(f'<span class="s" title="{g["id"]}">{std_svg(g["id"],size)}</span>' for g in std)
+    return f'<div class="strip {theme}"><span class="sz">{size}px<br>{theme}</span><div class="row">{items}</div></div>'
+std_strips=''.join(std_strip(s,t) for t in ('light','dark') for s in (16,24,32))
 page=f'''<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Glyph Contact Sheet</title>
@@ -50,7 +67,8 @@ footer{{max-width:1280px;margin:32px auto;padding:0 16px;color:var(--muted);font
 </style></head><body>
 <header><h1>Glyph contact sheet</h1>
 <p class="note">41 monoline glyphs &middot; 24&times;24 viewBox &middot; stroke-width 1.2 &middot; butt caps, miter joins &middot; drawn in currentColor.</p>
-<p class="note">Artwork &copy; the owner. All rights reserved. Not covered by any open-source licence of the apps that use it.</p></header>
+<p class="note">Glyph artwork &copy; the owner. All rights reserved. Not covered by any open-source licence of the apps that use it.</p>
+<p class="note">The standard icons further down are a separate, MIT-licensed set (icons/standard/).</p></header>
 <main>
 <h2>Glyphs (96&nbsp;px, light and dark)</h2>
 <div class="grid">
@@ -59,6 +77,16 @@ footer{{max-width:1280px;margin:32px auto;padding:0 16px;color:var(--muted);font
 <h2>Small-size legibility (16 / 24 / 32&nbsp;px)</h2>
 {strips}
 </main>
+<section id="standard">
+<h2>Standard icons (MIT)</h2>
+<p class="note">{len(std)} conventional symbols drawn in the house style &middot; MIT, see LICENSE &middot; the glyphs above remain all rights reserved.</p>
+<h2>Standard icons (96&nbsp;px, light and dark)</h2>
+<div class="grid">
+{''.join(std_cards)}
+</div>
+<h2>Standard icons, small-size legibility (16 / 24 / 32&nbsp;px)</h2>
+{std_strips}
+</section>
 <footer>Suggested roles are guesses from the shapes alone, not decisions. Glyph numbers follow the source sheet row by row, left to right.</footer>
 </body></html>
 '''

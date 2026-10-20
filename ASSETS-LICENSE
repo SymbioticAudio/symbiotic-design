@@ -8,9 +8,14 @@ VizDAW and EG13, which are GPL-3.0):
 
   - source-art/          (master artwork, Photoshop files)
   - icons/svg/glyph-*    (glyph icons redrawn from the master artwork)
-  - icons/contact-sheet.html (embeds the glyph artwork)
+  - icons/contact-sheet.html (embeds the glyph artwork; its glyph section
+    remains all rights reserved)
   - logo/                (SymbioticAudio logo, when added)
   - any PDF, PNG or other rendering generated from the files above
+
+Not covered by this file: the standard icon set in icons/standard/ (and
+icons/standard.json), which is MIT-licensed under LICENSE. The contact sheet
+also shows those standard icons; that section is MIT, the glyph section is not.
 
 No permission is granted to copy, modify, distribute or use this artwork,
 in whole or in part, except in official SymbioticAudio releases or with the

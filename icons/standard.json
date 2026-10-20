@@ -1,0 +1,344 @@
+[
+  {
+    "id": "play",
+    "name": "Play",
+    "category": "transport",
+    "description": "Right-pointing triangle"
+  },
+  {
+    "id": "pause",
+    "name": "Pause",
+    "category": "transport",
+    "description": "Two upright bars, outlined"
+  },
+  {
+    "id": "stop",
+    "name": "Stop",
+    "category": "transport",
+    "description": "Square"
+  },
+  {
+    "id": "record",
+    "name": "Record",
+    "category": "transport",
+    "description": "Solid disc"
+  },
+  {
+    "id": "record-outline",
+    "name": "Record (outline)",
+    "category": "transport",
+    "description": "Circle outline (record, unarmed or inactive)"
+  },
+  {
+    "id": "return-to-zero",
+    "name": "Return to zero",
+    "category": "transport",
+    "description": "Vertical bar with a left-pointing triangle"
+  },
+  {
+    "id": "go-to-end",
+    "name": "Go to end",
+    "category": "transport",
+    "description": "Right-pointing triangle with a vertical bar"
+  },
+  {
+    "id": "rewind",
+    "name": "Rewind",
+    "category": "transport",
+    "description": "Two left-pointing triangles"
+  },
+  {
+    "id": "fast-forward",
+    "name": "Fast forward",
+    "category": "transport",
+    "description": "Two right-pointing triangles"
+  },
+  {
+    "id": "previous",
+    "name": "Previous",
+    "category": "transport",
+    "description": "Vertical bar with two left-pointing triangles (previous marker / track)"
+  },
+  {
+    "id": "next",
+    "name": "Next",
+    "category": "transport",
+    "description": "Two right-pointing triangles with a vertical bar (next marker / track)"
+  },
+  {
+    "id": "loop",
+    "name": "Loop",
+    "category": "transport",
+    "description": "Two opposed right-angled arrows forming a closed cycle"
+  },
+  {
+    "id": "punch-in",
+    "name": "Punch in",
+    "category": "transport",
+    "description": "Arrow pointing into an opening bracket that holds a record dot"
+  },
+  {
+    "id": "punch-out",
+    "name": "Punch out",
+    "category": "transport",
+    "description": "Record dot inside a closing bracket with an arrow leaving it"
+  },
+  {
+    "id": "metronome",
+    "name": "Metronome",
+    "category": "transport",
+    "description": "Tapered metronome body with a base line and a tilted pendulum arm"
+  },
+  {
+    "id": "count-in",
+    "name": "Count in",
+    "category": "transport",
+    "description": "Three beat dots leading into a play triangle"
+  },
+  {
+    "id": "add",
+    "name": "Add",
+    "category": "edit",
+    "description": "Plus sign"
+  },
+  {
+    "id": "remove",
+    "name": "Remove",
+    "category": "edit",
+    "description": "Minus sign"
+  },
+  {
+    "id": "close",
+    "name": "Close",
+    "category": "edit",
+    "description": "Diagonal cross"
+  },
+  {
+    "id": "check",
+    "name": "Check",
+    "category": "edit",
+    "description": "Check mark"
+  },
+  {
+    "id": "undo",
+    "name": "Undo",
+    "category": "edit",
+    "description": "Arrow turning back to the left over a U-shaped path"
+  },
+  {
+    "id": "redo",
+    "name": "Redo",
+    "category": "edit",
+    "description": "Arrow turning forward to the right over a U-shaped path"
+  },
+  {
+    "id": "cut",
+    "name": "Cut",
+    "category": "edit",
+    "description": "Scissors: two finger rings with crossed blades"
+  },
+  {
+    "id": "copy",
+    "name": "Copy",
+    "category": "edit",
+    "description": "Two overlapping sheets, the front one whole"
+  },
+  {
+    "id": "paste",
+    "name": "Paste",
+    "category": "edit",
+    "description": "Clipboard with a clip at the top"
+  },
+  {
+    "id": "delete",
+    "name": "Delete",
+    "category": "edit",
+    "description": "Waste bin with lid and handle"
+  },
+  {
+    "id": "random",
+    "name": "Random",
+    "category": "edit",
+    "description": "Die face showing five pips (randomise)"
+  },
+  {
+    "id": "search",
+    "name": "Search",
+    "category": "app",
+    "description": "Magnifying glass"
+  },
+  {
+    "id": "zoom-in",
+    "name": "Zoom in",
+    "category": "app",
+    "description": "Magnifying glass with a plus"
+  },
+  {
+    "id": "zoom-out",
+    "name": "Zoom out",
+    "category": "app",
+    "description": "Magnifying glass with a minus"
+  },
+  {
+    "id": "settings",
+    "name": "Settings",
+    "category": "app",
+    "description": "Eight-tooth gear with a centre hole"
+  },
+  {
+    "id": "info",
+    "name": "Info",
+    "category": "app",
+    "description": "Circle with a lower-case i"
+  },
+  {
+    "id": "warning",
+    "name": "Warning",
+    "category": "app",
+    "description": "Triangle with an exclamation mark"
+  },
+  {
+    "id": "lock",
+    "name": "Lock",
+    "category": "app",
+    "description": "Closed padlock"
+  },
+  {
+    "id": "unlock",
+    "name": "Unlock",
+    "category": "app",
+    "description": "Open padlock with the shackle released on the right"
+  },
+  {
+    "id": "link",
+    "name": "Link",
+    "category": "app",
+    "description": "Two chain-link halves joined by a bar, on the diagonal"
+  },
+  {
+    "id": "unlink",
+    "name": "Unlink",
+    "category": "app",
+    "description": "Two chain-link halves pulled apart, with break marks, on the diagonal"
+  },
+  {
+    "id": "visible",
+    "name": "Visible",
+    "category": "app",
+    "description": "Open eye"
+  },
+  {
+    "id": "hidden",
+    "name": "Hidden",
+    "category": "app",
+    "description": "Eye struck through"
+  },
+  {
+    "id": "folder-open",
+    "name": "Open folder",
+    "category": "app",
+    "description": "Open folder: tabbed back panel with the front flap tipped forward"
+  },
+  {
+    "id": "save",
+    "name": "Save",
+    "category": "app",
+    "description": "Floppy disk with shutter and label"
+  },
+  {
+    "id": "export",
+    "name": "Export",
+    "category": "app",
+    "description": "Arrow rising out of a tray"
+  },
+  {
+    "id": "import",
+    "name": "Import",
+    "category": "app",
+    "description": "Arrow dropping into a tray"
+  },
+  {
+    "id": "chevron-up",
+    "name": "Chevron up",
+    "category": "app",
+    "description": "Upward chevron"
+  },
+  {
+    "id": "chevron-down",
+    "name": "Chevron down",
+    "category": "app",
+    "description": "Downward chevron"
+  },
+  {
+    "id": "chevron-left",
+    "name": "Chevron left",
+    "category": "app",
+    "description": "Left-pointing chevron"
+  },
+  {
+    "id": "chevron-right",
+    "name": "Chevron right",
+    "category": "app",
+    "description": "Right-pointing chevron"
+  },
+  {
+    "id": "menu",
+    "name": "Menu",
+    "category": "app",
+    "description": "Three horizontal lines"
+  },
+  {
+    "id": "more",
+    "name": "More",
+    "category": "app",
+    "description": "Three dots in a row"
+  },
+  {
+    "id": "midi-learn",
+    "name": "MIDI learn",
+    "category": "audio",
+    "description": "Five-pin DIN socket face with its key notch (MIDI learn)"
+  },
+  {
+    "id": "tempo-sync",
+    "name": "Tempo sync",
+    "category": "audio",
+    "description": "Clock face whose rim is a clockwise arrow (sync to tempo / clock)"
+  },
+  {
+    "id": "solo",
+    "name": "Solo",
+    "category": "audio",
+    "description": "Letter S in a square frame (solo)"
+  },
+  {
+    "id": "mute",
+    "name": "Mute",
+    "category": "audio",
+    "description": "Letter M in a square frame (mute)"
+  },
+  {
+    "id": "monitor",
+    "name": "Monitor",
+    "category": "audio",
+    "description": "Loudspeaker with two sound-wave arcs"
+  },
+  {
+    "id": "headphones",
+    "name": "Headphones",
+    "category": "audio",
+    "description": "Over-ear headphones: headband arc and two ear cups"
+  },
+  {
+    "id": "microphone",
+    "name": "Microphone",
+    "category": "audio",
+    "description": "Capsule microphone in a U-shaped cradle on a short stand"
+  },
+  {
+    "id": "bypass",
+    "name": "Bypass",
+    "category": "audio",
+    "description": "Signal line that arcs over a processor box instead of passing through it"
+  }
+]
