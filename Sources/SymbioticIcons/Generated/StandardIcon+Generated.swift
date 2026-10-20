@@ -419,9 +419,9 @@ enum StandardIconDrawings {
     ])
     /// unlock
     static let unlock: IconDrawing = IconDrawing(shapes: [
-        IconShape(paint: .stroke, weight: 1, cap: .butt, join: .miter, ops: [.move(6.4, 10.8), .line(17.6, 10.8), .line(17.6, 19.4), .line(6.4, 19.4), .close]),
-        IconShape(paint: .stroke, weight: 1, cap: .butt, join: .miter, ops: [.move(9, 10.8), .line(9, 8), .curve(9, 6.3431, 10.3431, 5, 12, 5), .curve(13.6569, 5, 15, 6.3431, 15, 8), .line(15, 8.8)]),
-        IconShape(paint: .stroke, weight: 1, cap: .butt, join: .miter, ops: [.move(12, 13.8), .line(12, 16.4)]),
+        IconShape(paint: .stroke, weight: 1, cap: .butt, join: .miter, ops: [.move(6.4, 11.6), .line(17.6, 11.6), .line(17.6, 20.2), .line(6.4, 20.2), .close]),
+        IconShape(paint: .stroke, weight: 1, cap: .butt, join: .miter, ops: [.move(9, 11.6), .line(9, 6.8), .curve(9, 5.1431, 10.3431, 3.8, 12, 3.8), .curve(13.6569, 3.8, 15, 5.1431, 15, 6.8), .line(15, 8)]),
+        IconShape(paint: .stroke, weight: 1, cap: .butt, join: .miter, ops: [.move(12, 14.6), .line(12, 17.2)]),
     ])
     /// link
     static let link: IconDrawing = IconDrawing(shapes: [

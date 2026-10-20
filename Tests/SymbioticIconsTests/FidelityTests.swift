@@ -16,15 +16,17 @@ import SymbioticTokens
     /// outlines).
     static let tolerance = 0.02
     /// A pixel is "wrong" when its alpha differs by more than this (0...1).
-    /// The mean alone cannot tell lock from unlock (0.006 apart, below the
-    /// antialiasing noise). Measured at Task 8: no pixel of a matching icon
-    /// differs by more than 0.33 (84/255, glyph-23), while every one of the
-    /// 21,756 ordered pairs of different icons and glyphs has at least four
-    /// pixels that differ by more than 0.5 (fewest: lock/unlock, 4).
+    /// The mean alone cannot tell zoom-in from zoom-out (0.013 apart, below
+    /// the tolerance). Measured at Task 8: no pixel of a matching icon
+    /// differs by more than 0.33 (84/255, glyph-23). Re-measured after the
+    /// unlock redraw (final review I1): every one of the 21,756 ordered pairs
+    /// of different icons and glyphs has at least 16 pixels that differ by
+    /// more than 0.5 (fewest: zoom-in/zoom-out, 16; lock/unlock is now 214,
+    /// unlock/lock 220, up from 4).
     static let pixelThreshold = 0.5
     /// An icon fails when this many pixels or more are wrong. Count-based so
     /// one stray antialiased pixel on another renderer cannot flake CI;
-    /// still below lock/unlock's 4.
+    /// well below the closest pair's 16.
     static let wrongPixelLimit = 3
 
     static func reference(_ name: String) throws -> [UInt8] {
@@ -57,10 +59,20 @@ import SymbioticTokens
         #expect(IconBitmap.meanDifference(ours, try Self.reference("stop")) > Self.tolerance)
     }
 
-    /// The closest pair of different icons: only the pixel check separates them.
+    /// A state pair that must read as two states: lock and unlock differ by
+    /// far more than the limit (214 pixels when measured), and by the mean too.
     @Test func lockDoesNotMatchUnlock() throws {
         let ours = Self.ours(.lock)
-        let wrong = IconBitmap.pixelsDiffering(ours, try Self.reference("unlock"), by: Self.pixelThreshold)
+        let reference = try Self.reference("unlock")
+        let wrong = IconBitmap.pixelsDiffering(ours, reference, by: Self.pixelThreshold)
+        #expect(wrong >= 10 * Self.wrongPixelLimit)
+        #expect(IconBitmap.meanDifference(ours, reference) > Self.tolerance)
+    }
+
+    /// The closest pair of different icons: only the pixel check separates them.
+    @Test func zoomInDoesNotMatchZoomOut() throws {
+        let ours = Self.ours(.zoomIn)
+        let wrong = IconBitmap.pixelsDiffering(ours, try Self.reference("zoom-out"), by: Self.pixelThreshold)
         #expect(wrong >= Self.wrongPixelLimit)
     }
 }
