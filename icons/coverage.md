@@ -121,59 +121,7 @@ Each of these draws its standard icon until a brand glyph is assigned.
 
 ## To draw in-house: standard icons that do not exist yet
 
-| Role | Standard icon to draw |
-|---|---|
-| `transport.pre-roll` | `pre-roll` |
-| `mode.snap` | `snap` |
-| `record.takes` | `takes` |
-| `monitor.phones-left` | `headphones-left` |
-| `monitor.phones-right` | `headphones-right` |
-| `editor.arrangement` | `arrangement` |
-| `editor.piano-roll` | `piano-roll` |
-| `editor.list` | `list` |
-| `editor.strip-chart` | `strip-chart` |
-| `editor.drum-grid` | `drum-grid` |
-| `editor.notation` | `treble-clef` |
-| `editor.notation-alternate` | `bass-clef` |
-| `editor.envelope` | `envelope` |
-| `tool.arrow` | `pointer` |
-| `tool.pencil` | `pencil` |
-| `tool.eraser` | `eraser` |
-| `notation.fermata` | `fermata` |
-| `notation.natural` | `natural` |
-| `notation.repeat` | `repeat-sign` |
-| `edit.remove-item` | `remove-circle` |
-| `view.taller-rows` | `expand` |
-| `view.shorter-rows` | `collapse` |
-| `status.problem` | `alert-circle` |
-| `status.fault` | `status-dot` |
-| `status.audio-muted` | `speaker-off` |
-| `status.disk-slow` | `drive-warning` |
-| `media.offline` | `file-missing` |
-| `media.pool` | `media-pool` |
-| `audio.normalize` | `normalize` |
-| `audio.fade-in` | `fade-in` |
-| `audio.fade-out` | `fade-out` |
-| `audio.mono` | `mono` |
-| `audio.stereo` | `stereo` |
-| `mixer.power` | `power` |
-| `routing.send` | `send` |
-| `lane.input-fx` | `effects` |
-| `voice.poly` | `voice-poly` |
-| `voice.mono` | `voice-mono` |
-| `voice.legato` | `voice-legato` |
-| `slot.source` | `oscillator` |
-| `slot.filter` | `filter` |
-| `slot.shaper` | `shaper` |
-| `slot.fx` | `effects` |
-| `slot.modulation` | `modulation` |
-| `preset.init` | `reset` |
-| `part.a` | `part-a` |
-| `part.b` | `part-b` |
-| `part.single` | `single` |
-| `part.layer` | `layer` |
-| `part.split` | `split` |
-| `part.multi` | `multi` |
+None: every role's standard icon exists in `icons/standard/`.
 
 ## Glyphs not assigned to any role
 

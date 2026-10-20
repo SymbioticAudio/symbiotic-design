@@ -340,5 +340,305 @@
     "name": "Bypass",
     "category": "audio",
     "description": "Signal line that arcs over a processor box instead of passing through it"
+  },
+  {
+    "id": "pre-roll",
+    "name": "Pre-roll",
+    "category": "transport",
+    "description": "Three lead-in dashes into a play triangle"
+  },
+  {
+    "id": "snap",
+    "name": "Snap",
+    "category": "edit",
+    "description": "Horseshoe magnet (snap to grid)"
+  },
+  {
+    "id": "takes",
+    "name": "Takes",
+    "category": "transport",
+    "description": "Three staggered bars (take lanes)"
+  },
+  {
+    "id": "headphones-left",
+    "name": "Headphones left",
+    "category": "audio",
+    "description": "Left ear cup with half the headband"
+  },
+  {
+    "id": "headphones-right",
+    "name": "Headphones right",
+    "category": "audio",
+    "description": "Right ear cup with half the headband"
+  },
+  {
+    "id": "arrangement",
+    "name": "Arrangement",
+    "category": "editor",
+    "description": "Blocks laid out on three lanes"
+  },
+  {
+    "id": "piano-roll",
+    "name": "Piano roll",
+    "category": "editor",
+    "description": "Keyboard strip beside three note bars"
+  },
+  {
+    "id": "list",
+    "name": "List",
+    "category": "editor",
+    "description": "Three bullet points with lines (event list)"
+  },
+  {
+    "id": "strip-chart",
+    "name": "Strip chart",
+    "category": "editor",
+    "description": "Controller bars of different heights on a baseline"
+  },
+  {
+    "id": "drum-grid",
+    "name": "Drum grid",
+    "category": "editor",
+    "description": "Step grid of squares, some filled (hits)"
+  },
+  {
+    "id": "treble-clef",
+    "name": "Treble clef",
+    "category": "notation",
+    "description": "G clef: stem with a top loop and a spiral round the G line"
+  },
+  {
+    "id": "bass-clef",
+    "name": "Bass clef",
+    "category": "notation",
+    "description": "F clef: dotted hook curling down, with two dots"
+  },
+  {
+    "id": "envelope",
+    "name": "Envelope",
+    "category": "editor",
+    "description": "Attack, decay, sustain, release line"
+  },
+  {
+    "id": "pointer",
+    "name": "Pointer",
+    "category": "edit",
+    "description": "Arrow pointer (select tool)"
+  },
+  {
+    "id": "pencil",
+    "name": "Pencil",
+    "category": "edit",
+    "description": "Pencil on the diagonal (draw tool)"
+  },
+  {
+    "id": "eraser",
+    "name": "Eraser",
+    "category": "edit",
+    "description": "Eraser block on the diagonal (erase tool)"
+  },
+  {
+    "id": "fermata",
+    "name": "Fermata",
+    "category": "notation",
+    "description": "Arc over a dot (hold)"
+  },
+  {
+    "id": "natural",
+    "name": "Natural",
+    "category": "notation",
+    "description": "Natural sign: two offset stems joined by two slanted bars"
+  },
+  {
+    "id": "repeat-sign",
+    "name": "Repeat",
+    "category": "notation",
+    "description": "End-repeat barline: two dots, a thin and a thick bar"
+  },
+  {
+    "id": "remove-circle",
+    "name": "Remove (circled)",
+    "category": "edit",
+    "description": "Minus sign in a circle"
+  },
+  {
+    "id": "expand",
+    "name": "Expand",
+    "category": "app",
+    "description": "Two arrows pointing out to opposite corners"
+  },
+  {
+    "id": "collapse",
+    "name": "Collapse",
+    "category": "app",
+    "description": "Two arrows pointing in from opposite corners"
+  },
+  {
+    "id": "alert-circle",
+    "name": "Alert",
+    "category": "app",
+    "description": "Exclamation mark in a circle"
+  },
+  {
+    "id": "status-dot",
+    "name": "Status dot",
+    "category": "app",
+    "description": "Small solid dot (status indicator)"
+  },
+  {
+    "id": "speaker-off",
+    "name": "Speaker off",
+    "category": "audio",
+    "description": "Loudspeaker with a cross (audio muted)"
+  },
+  {
+    "id": "drive-warning",
+    "name": "Drive warning",
+    "category": "app",
+    "description": "Exclamation mark over a disk drive (disk too slow)"
+  },
+  {
+    "id": "file-missing",
+    "name": "File missing",
+    "category": "app",
+    "description": "Page with a folded corner, struck through (media offline)"
+  },
+  {
+    "id": "media-pool",
+    "name": "Media pool",
+    "category": "app",
+    "description": "Box holding a waveform, a sheet behind it"
+  },
+  {
+    "id": "normalize",
+    "name": "Normalize",
+    "category": "audio",
+    "description": "Waveform reaching a ceiling and a floor line"
+  },
+  {
+    "id": "fade-in",
+    "name": "Fade in",
+    "category": "audio",
+    "description": "Area under a curve rising from left to right"
+  },
+  {
+    "id": "fade-out",
+    "name": "Fade out",
+    "category": "audio",
+    "description": "Area under a curve falling from left to right"
+  },
+  {
+    "id": "mono",
+    "name": "Mono",
+    "category": "audio",
+    "description": "One ring (one channel)"
+  },
+  {
+    "id": "stereo",
+    "name": "Stereo",
+    "category": "audio",
+    "description": "Two overlapping rings (two channels)"
+  },
+  {
+    "id": "power",
+    "name": "Power",
+    "category": "audio",
+    "description": "Ring open at the top with a bar through the gap"
+  },
+  {
+    "id": "send",
+    "name": "Send",
+    "category": "audio",
+    "description": "Knob ring with an arrow leaving it (send)"
+  },
+  {
+    "id": "effects",
+    "name": "Effects",
+    "category": "audio",
+    "description": "Four-pointed star (effects)"
+  },
+  {
+    "id": "voice-poly",
+    "name": "Poly",
+    "category": "audio",
+    "description": "Three stacked note heads on one stem (polyphonic)"
+  },
+  {
+    "id": "voice-mono",
+    "name": "Mono voice",
+    "category": "audio",
+    "description": "One note head on a stem (monophonic)"
+  },
+  {
+    "id": "voice-legato",
+    "name": "Legato",
+    "category": "audio",
+    "description": "Two note heads joined by a slur"
+  },
+  {
+    "id": "oscillator",
+    "name": "Oscillator",
+    "category": "audio",
+    "description": "One cycle of a sine wave (sound source)"
+  },
+  {
+    "id": "filter",
+    "name": "Filter",
+    "category": "audio",
+    "description": "Low-pass response: flat, then rolling off"
+  },
+  {
+    "id": "shaper",
+    "name": "Shaper",
+    "category": "audio",
+    "description": "S-shaped transfer curve in a frame (waveshaper)"
+  },
+  {
+    "id": "modulation",
+    "name": "Modulation",
+    "category": "audio",
+    "description": "One cycle of a triangle wave (LFO)"
+  },
+  {
+    "id": "reset",
+    "name": "Reset",
+    "category": "app",
+    "description": "Anticlockwise arrow round a circle (initialise)"
+  },
+  {
+    "id": "part-a",
+    "name": "Part A",
+    "category": "audio",
+    "description": "Letter A in a square frame"
+  },
+  {
+    "id": "part-b",
+    "name": "Part B",
+    "category": "audio",
+    "description": "Letter B in a square frame"
+  },
+  {
+    "id": "single",
+    "name": "Single",
+    "category": "audio",
+    "description": "One box spanning the keyboard (single part)"
+  },
+  {
+    "id": "layer",
+    "name": "Layer",
+    "category": "audio",
+    "description": "Two stacked layers: a diamond over a chevron"
+  },
+  {
+    "id": "split",
+    "name": "Split",
+    "category": "audio",
+    "description": "Two boxes side by side (keyboard split)"
+  },
+  {
+    "id": "multi",
+    "name": "Multi",
+    "category": "audio",
+    "description": "Four boxes in a 2 by 2 grid (multitimbral)"
   }
 ]

@@ -1,5 +1,5 @@
-import json, re, html
-D='/Users/lattawb/workspace/symbiotic-design/icons'
+import json, re, html, pathlib
+D=str(pathlib.Path(__file__).resolve().parents[1]/'icons')
 meta=json.load(open(f'{D}/glyphs.json'))
 def svg(n,size,title=False):
     s=open(f'{D}/svg/glyph-{n:02d}.svg').read().strip()

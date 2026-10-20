@@ -2,7 +2,7 @@
 
 Standard icons — MIT (see ../../LICENSE). Generic conventional symbols drawn for SymbioticAudio in the house style.
 
-57 icons in four categories (`transport`, `edit`, `app`, `audio`), one file per icon:
+107 icons in six categories (`transport`, `edit`, `app`, `audio`, `editor`, `notation`), one file per icon:
 `<name>.svg`. The index with names, categories and descriptions is `../standard.json`.
 Every shape was drawn fresh from the convention; none is copied or derived from
 another icon library or from the branded glyphs in `../svg/` (which are all rights
