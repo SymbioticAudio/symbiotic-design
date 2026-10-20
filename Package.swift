@@ -10,9 +10,12 @@ let package = Package(
     platforms: [minimumMacOS],
     products: [
         .library(name: "SymbioticTokens", targets: ["SymbioticTokens"]),
+        .library(name: "SymbioticIcons", targets: ["SymbioticIcons"]),
     ],
     targets: [
         .target(name: "SymbioticTokens"),
+        .target(name: "SymbioticIcons", dependencies: ["SymbioticTokens"]),
         .testTarget(name: "SymbioticTokensTests", dependencies: ["SymbioticTokens"]),
+        .testTarget(name: "SymbioticIconsTests", dependencies: ["SymbioticIcons", "SymbioticTokens"]),
     ]
 )

@@ -129,3 +129,32 @@ class Roles(Scratch):
         self.assertEqual(result.returncode, 1)
         self.assertIn("error: glyphs.json: glyph-01: designerName", result.stderr)
         self.assertNotIn("roles.json: glyphs.json", result.stderr)
+
+
+class Icons(Scratch):
+    def test_missing_standard_icon_is_listed_and_no_swift_is_written(self):
+        def add_role(d):
+            d["roles"].append({"id": "tool.glue", "standard": "glue", "label": "Glue tool"})
+        self.edit_json("icons/roles.json", add_role)
+        swift = self.root / "Sources" / "SymbioticIcons" / "Generated" / "IconRole+Generated.swift"
+        before = swift.read_bytes()
+        result = self.run_generate()
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("error: role tool.glue needs icons/standard/glue.svg", result.stderr)
+        self.assertIn("| `tool.glue` | `glue` |", (self.root / "icons" / "coverage.md").read_text(encoding="utf-8"))
+        self.assertEqual(swift.read_bytes(), before)
+
+    def test_unsupported_svg_fails(self):
+        path = self.root / "icons" / "standard" / "play.svg"
+        path.write_text(path.read_text(encoding="utf-8").replace("<polygon", '<polygon opacity="0.5"'),
+                        encoding="utf-8")
+        result = self.run_generate()
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("play.svg: <polygon> attribute 'opacity' is not supported", result.stderr)
+
+    def test_index_and_files_must_agree(self):
+        (self.root / "icons" / "standard" / "orphan.svg").write_text(
+            (self.root / "icons" / "standard" / "play.svg").read_text(encoding="utf-8"), encoding="utf-8")
+        result = self.run_generate()
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("orphan", result.stderr)

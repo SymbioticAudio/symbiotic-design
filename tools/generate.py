@@ -2,8 +2,11 @@
 """Validate the design sources and write every generated file.
 
 Usage: python3 tools/generate.py
-Writes tokens/contrast.md, icons/coverage.md and Sources/SymbioticTokens/Generated/.
-Exit status 1 (and nothing written) if a source is invalid.
+Writes tokens/contrast.md, icons/coverage.md, Sources/SymbioticTokens/Generated/
+and Sources/SymbioticIcons/Generated/.
+Exit status 1 (and nothing written) if a source is invalid. If a role's
+standard icon has no SVG yet, icons/coverage.md is still written (it lists
+what to draw) but no Swift is.
 """
 import pathlib
 import sys
@@ -12,6 +15,8 @@ sys.dont_write_bytecode = True
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 
 import rolelib  # noqa: E402
+import svgsubset  # noqa: E402
+import swiftgen_icons  # noqa: E402
 import swiftgen_tokens  # noqa: E402
 import tokenlib  # noqa: E402
 
@@ -43,19 +48,31 @@ def tokens_step():
     return files, [swiftgen_tokens.OUT]
 
 
-def coverage_step():
-    """Returns (files, missing standard icons). Missing icons are listed, not fatal yet."""
+def parse_dir(folder, names):
+    return [(n, svgsubset.parse_svg_file(folder / f"{n}.svg")) for n in names]
+
+
+def icons_step():
+    """Returns (files, owned dirs, missing standard icons)."""
     glyphs = rolelib.load_json(ROOT / "icons" / "glyphs.json")
     roles = rolelib.validate(rolelib.load_json(ROOT / "icons" / "roles.json"), glyphs)
     standard_names = [e["id"] for e in rolelib.load_json(ROOT / "icons" / "standard.json")]
+    on_disk = sorted(p.stem for p in (ROOT / "icons" / "standard").glob("*.svg"))
+    if sorted(standard_names) != on_disk:
+        raise svgsubset.SvgError("icons/standard.json and icons/standard/*.svg list different icons: "
+                                 f"{sorted(set(standard_names) ^ set(on_disk))}")
     files = {"icons/coverage.md": rolelib.coverage_markdown(roles, standard_names, glyphs)}
-    return files, rolelib.missing_standard(roles, standard_names)
+    missing = rolelib.missing_standard(roles, standard_names)
+    standard = parse_dir(ROOT / "icons" / "standard", standard_names)
+    if not missing:
+        files.update(swiftgen_icons.generate(standard, roles))
+    return files, [swiftgen_icons.OUT], missing
 
 
 def main():
     try:
         token_files, token_dirs = tokens_step()
-        icon_files, missing = coverage_step()
+        icon_files, icon_dirs, missing = icons_step()
     except tokenlib.TokenError as e:
         for p in e.problems:
             print(f"error: tokens.json: {p}", file=sys.stderr)
@@ -65,10 +82,17 @@ def main():
             source = "" if p.startswith("glyphs.json:") else "roles.json: "
             print(f"error: {source}{p}", file=sys.stderr)
         return 1
-    for rid, name in missing:
-        print(f"note: role {rid} needs icons/standard/{name}.svg (listed in icons/coverage.md)")
+    except svgsubset.SvgError as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 1
+    if missing:
+        write_tree({"icons/coverage.md": icon_files["icons/coverage.md"]}, [])
+        for rid, name in missing:
+            print(f"error: role {rid} needs icons/standard/{name}.svg (listed in icons/coverage.md)",
+                  file=sys.stderr)
+        return 1
     files = {**token_files, **icon_files}
-    write_tree(files, token_dirs)
+    write_tree(files, token_dirs + icon_dirs)
     print(f"wrote {len(files)} files")
     return 0
 
