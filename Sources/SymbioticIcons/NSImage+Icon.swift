@@ -54,6 +54,16 @@ final class IconImageRep: NSImageRep, @unchecked Sendable {
         nil
     }
 
+    /// NSImageRep's own copy duplicates the object's bytes without retaining
+    /// the stored Swift references, so freeing the original and the copy would
+    /// release `drawing` twice. Build a fresh rep instead (NSImage.copy() copies
+    /// its representations through this too).
+    override func copy(with zone: NSZone? = nil) -> Any {
+        let copy = IconImageRep(drawing: drawing, size: size.width, strokeWidth: strokeWidth)
+        copy.size = size
+        return copy
+    }
+
     override func draw() -> Bool {
         draw(in: NSRect(origin: .zero, size: size))
     }

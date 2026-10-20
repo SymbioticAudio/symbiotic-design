@@ -10,19 +10,24 @@ private struct EmptyDrawingProvider: IconProvider {
 }
 
 /// Draws `image` into a `side` x `side` pixel bitmap at 1x and returns its alpha mask.
-private func drawnMask(_ image: NSImage, side: Int) -> [UInt8] {
+private func drawnMask(_ image: NSImage, side: Int, flipped: Bool = false) -> [UInt8] {
     let context = CGContext(data: nil, width: side, height: side, bitsPerComponent: 8, bytesPerRow: 0,
                             space: CGColorSpace(name: CGColorSpace.sRGB)!,
                             bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
     NSGraphicsContext.saveGraphicsState()
-    NSGraphicsContext.current = NSGraphicsContext(cgContext: context, flipped: false)
+    NSGraphicsContext.current = NSGraphicsContext(cgContext: context, flipped: flipped)
+    if flipped {
+        // Make the context's y axis point down, as a flipped view's does.
+        context.translateBy(x: 0, y: CGFloat(side))
+        context.scaleBy(x: 1, y: -1)
+    }
     image.draw(in: NSRect(x: 0, y: 0, width: side, height: side))
     NSGraphicsContext.restoreGraphicsState()
     return IconBitmap.alpha(of: context.makeImage()!)
 }
 
-@Suite struct FixRoundTests {
-    // M1: ink paths are built once per (drawing, size, stroke).
+@Suite struct CacheAndImageTests {
+    // Ink paths are built once per (drawing, size, stroke).
 
     @Test func inkPathsAreCachedPerDrawingSizeAndStroke() {
         let drawing = StandardIcon.fadeIn.drawing
@@ -61,7 +66,7 @@ private func drawnMask(_ image: NSImage, side: Int) -> [UInt8] {
         #expect(cache.count == 16)
     }
 
-    // M3: an empty drawing from a provider counts as "not provided".
+    // An empty drawing from a provider counts as "not provided".
 
     @Test func emptyProviderDrawingFallsBack() {
         let resolver = IconResolver(provider: EmptyDrawingProvider())
@@ -69,7 +74,7 @@ private func drawnMask(_ image: NSImage, side: Int) -> [UInt8] {
         #expect(resolver.resolve(.brandLogo) == .wordmark(Icons.wordmark))
     }
 
-    // M4: the image honours the rect it is drawn into; the stroke stays the requested size's.
+    // The image honours the rect it is drawn into; the stroke stays the requested size's.
 
     @Test func imageDrawnIntoALargerRectKeepsItsStroke() {
         let image = NSImage.icon(.transportStop, size: 16, theme: .classicLight, resolver: IconResolver(provider: nil))
@@ -93,5 +98,37 @@ private func drawnMask(_ image: NSImage, side: Int) -> [UInt8] {
         let fromImage = IconBitmap.alpha(of: cg)
         #expect(IconBitmap.meanDifference(fromImage, kept) < 0.02)
         #expect(IconBitmap.meanDifference(fromImage, fattened) > 0.05)
+    }
+
+    // Copies of an image and of its representation own their drawing: freeing
+    // the originals and then the copies must not over-release it.
+
+    @Test func copiedImageAndRepresentationSurviveTheOriginals() {
+        let resolver = IconResolver(provider: nil)
+        let expected = IconBitmap.alpha(of: StandardIcon.stop.drawing, size: 32,
+                                        strokeWidth: Theme.classicLight.iconStroke.width(forSize: 32))
+        for _ in 0..<3 {
+            var imageCopy: NSImage?
+            var repCopy: NSImageRep?
+            autoreleasepool {
+                let image = NSImage.icon(.transportStop, size: 32, theme: .classicLight, resolver: resolver)
+                imageCopy = image.copy() as? NSImage
+                repCopy = image.representations.first?.copy() as? NSImageRep
+            }
+            #expect(imageCopy != nil)
+            #expect(repCopy is IconImageRep)
+            #expect(repCopy?.size == NSSize(width: 32, height: 32))
+            autoreleasepool {
+                #expect(IconBitmap.meanDifference(drawnMask(imageCopy!, side: 32), expected) < 0.02)
+                let fromRep = NSImage(size: NSSize(width: 32, height: 32))
+                fromRep.addRepresentation(repCopy!)
+                #expect(IconBitmap.meanDifference(drawnMask(fromRep, side: 32), expected) < 0.02)
+                #expect(IconBitmap.meanDifference(drawnMask(imageCopy!, side: 32, flipped: true), expected) < 0.02)
+            }
+            autoreleasepool {
+                imageCopy = nil
+                repCopy = nil
+            }
+        }
     }
 }
