@@ -59,8 +59,8 @@ stroke width comes from the theme's `iconStroke` token for that size
 
 Five themes ship: `classic-light`, `studio-dark`, `flat`, `console` and
 `symbiotic` (SymbioticAudio's blue-and-gold flat look; it is not the default).
-They are mainly for VizDAW, which lets the user switch. The `Brand` colours
-(gold, cyan, cyan ink) are the same in every theme.
+They are mainly for VizDAW, which lets the user switch. The six `Brand` colours
+(gold, cyan, cyan ink, ink, paper and rule) are the same in every theme.
 
 An app can build its own `Theme` with the public initialisers; EG13 does this
 with one fixed custom palette made from the tokens and has no theme switching.
