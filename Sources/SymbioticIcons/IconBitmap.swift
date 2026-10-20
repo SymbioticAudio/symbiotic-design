@@ -33,6 +33,18 @@ enum IconBitmap {
         return Double(total) / Double(a.count) / 255
     }
 
+    /// Largest single-pixel absolute difference of two equal-length masks,
+    /// 0 (same) to 1. Catches a small missing or extra stroke that the mean
+    /// cannot (lock and unlock differ by a mean of only about 0.006 at 48 px).
+    static func maxDifference(_ a: [UInt8], _ b: [UInt8]) -> Double {
+        precondition(a.count == b.count, "masks differ in size")
+        var worst = 0
+        for i in a.indices {
+            worst = max(worst, abs(Int(a[i]) - Int(b[i])))
+        }
+        return Double(worst) / 255
+    }
+
     private static func render(width: Int, height: Int, _ body: (CGContext) -> Void) -> [UInt8] {
         var pixels = [UInt8](repeating: 0, count: width * height * 4)
         pixels.withUnsafeMutableBytes { buffer in

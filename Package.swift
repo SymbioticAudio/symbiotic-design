@@ -18,7 +18,7 @@ let package = Package(
         .target(name: "SymbioticIcons", dependencies: ["SymbioticTokens"]),
         .target(name: "SymbioticBrand", dependencies: ["SymbioticIcons"]),
         .testTarget(name: "SymbioticTokensTests", dependencies: ["SymbioticTokens"]),
-        .testTarget(name: "SymbioticIconsTests", dependencies: ["SymbioticIcons", "SymbioticTokens"]),
-        .testTarget(name: "SymbioticBrandTests", dependencies: ["SymbioticBrand", "SymbioticIcons", "SymbioticTokens"]),
+        .testTarget(name: "SymbioticIconsTests", dependencies: ["SymbioticIcons", "SymbioticTokens"], exclude: ["References"]),
+        .testTarget(name: "SymbioticBrandTests", dependencies: ["SymbioticBrand", "SymbioticIcons", "SymbioticTokens"], exclude: ["References"]),
     ]
 )
