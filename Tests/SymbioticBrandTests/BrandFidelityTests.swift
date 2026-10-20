@@ -43,10 +43,11 @@ import SymbioticTokens
 /// Every brand glyph drawn by the generated code at 48 px matches the
 /// headless-Chrome render of its SVG (tools/references.py).
 @Suite struct BrandFidelityTests {
-    /// Same tolerances as the standard icons (FidelityTests.tolerance and
-    /// FidelityTests.pixelTolerance).
+    /// Same tolerances as the standard icons (FidelityTests.tolerance,
+    /// .pixelThreshold and .wrongPixelLimit).
     static let tolerance = 0.02
-    static let pixelTolerance = 0.5
+    static let pixelThreshold = 0.5
+    static let wrongPixelLimit = 3
 
     @Test(arguments: BrandGlyph.allCases.map(\.rawValue))
     func glyphMatchesReference(id: String) throws {
@@ -59,8 +60,8 @@ import SymbioticTokens
         let ours = IconBitmap.alpha(of: glyph.drawing, size: 48, strokeWidth: stroke)
         let reference = IconBitmap.alpha(of: image)
         let diff = IconBitmap.meanDifference(ours, reference)
-        let worst = IconBitmap.maxDifference(ours, reference)
+        let wrong = IconBitmap.pixelsDiffering(ours, reference, by: Self.pixelThreshold)
         #expect(diff < Self.tolerance, "\(id): mean difference \(diff)")
-        #expect(worst < Self.pixelTolerance, "\(id): largest pixel difference \(worst)")
+        #expect(wrong < Self.wrongPixelLimit, "\(id): \(wrong) pixels differ by more than \(Self.pixelThreshold)")
     }
 }

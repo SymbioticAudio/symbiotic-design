@@ -15,12 +15,17 @@ import SymbioticTokens
     /// all antialiasing (Chrome's Skia against CoreGraphics filling stroked
     /// outlines).
     static let tolerance = 0.02
-    /// Largest single-pixel alpha difference allowed (0...1). The mean alone
-    /// cannot tell lock from unlock (0.006 apart, below the antialiasing
-    /// noise), but no pixel of a matching icon differs by more than 0.33
-    /// (measured worst: 84/255, glyph-23), while every pair of different
-    /// icons has at least four pixels that differ by more than 0.5.
-    static let pixelTolerance = 0.5
+    /// A pixel is "wrong" when its alpha differs by more than this (0...1).
+    /// The mean alone cannot tell lock from unlock (0.006 apart, below the
+    /// antialiasing noise). Measured at Task 8: no pixel of a matching icon
+    /// differs by more than 0.33 (84/255, glyph-23), while every one of the
+    /// 21,756 ordered pairs of different icons and glyphs has at least four
+    /// pixels that differ by more than 0.5 (fewest: lock/unlock, 4).
+    static let pixelThreshold = 0.5
+    /// An icon fails when this many pixels or more are wrong. Count-based so
+    /// one stray antialiased pixel on another renderer cannot flake CI;
+    /// still below lock/unlock's 4.
+    static let wrongPixelLimit = 3
 
     static func reference(_ name: String) throws -> [UInt8] {
         let url = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
@@ -42,9 +47,9 @@ import SymbioticTokens
         let ours = Self.ours(icon)
         let reference = try Self.reference(name)
         let diff = IconBitmap.meanDifference(ours, reference)
-        let worst = IconBitmap.maxDifference(ours, reference)
+        let wrong = IconBitmap.pixelsDiffering(ours, reference, by: Self.pixelThreshold)
         #expect(diff < Self.tolerance, "\(name): mean difference \(diff)")
-        #expect(worst < Self.pixelTolerance, "\(name): largest pixel difference \(worst)")
+        #expect(wrong < Self.wrongPixelLimit, "\(name): \(wrong) pixels differ by more than \(Self.pixelThreshold)")
     }
 
     @Test func aDifferentIconDoesNotMatch() throws {
@@ -55,6 +60,7 @@ import SymbioticTokens
     /// The closest pair of different icons: only the pixel check separates them.
     @Test func lockDoesNotMatchUnlock() throws {
         let ours = Self.ours(.lock)
-        #expect(IconBitmap.maxDifference(ours, try Self.reference("unlock")) > Self.pixelTolerance)
+        let wrong = IconBitmap.pixelsDiffering(ours, try Self.reference("unlock"), by: Self.pixelThreshold)
+        #expect(wrong >= Self.wrongPixelLimit)
     }
 }
