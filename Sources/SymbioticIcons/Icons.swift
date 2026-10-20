@@ -1,8 +1,8 @@
 // MIT licence: see LICENSE.
 import os
 
-/// Supplies drawings for roles, e.g. SymbioticBrand.provider. Return nil to
-/// let a role fall back to its standard icon.
+/// Supplies drawings for roles, e.g. SymbioticBrand.provider. Return nil (or an
+/// empty drawing) to let a role fall back to its standard icon.
 public protocol IconProvider: Sendable {
     func drawing(for role: IconRole) -> IconDrawing?
 }
@@ -14,8 +14,8 @@ public enum ResolvedIcon: Sendable, Hashable {
     case wordmark(String)
 }
 
-/// Resolves roles: the provider's drawing if it maps the role, otherwise the
-/// standard icon; brand.logo without a provider becomes the wordmark.
+/// Resolves roles: the provider's drawing if it maps the role to a non-empty
+/// drawing, otherwise the standard icon; brand.logo without one becomes the wordmark.
 public struct IconResolver: Sendable {
     public let provider: (any IconProvider)?
 
@@ -24,7 +24,7 @@ public struct IconResolver: Sendable {
     }
 
     public func resolve(_ role: IconRole) -> ResolvedIcon {
-        if let drawing = provider?.drawing(for: role) {
+        if let drawing = provider?.drawing(for: role), !drawing.shapes.isEmpty {
             return .drawing(drawing)
         }
         if let standard = role.standard {

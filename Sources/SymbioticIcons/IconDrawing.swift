@@ -1,5 +1,6 @@
 // MIT licence: see LICENSE.
 import CoreGraphics
+import os
 
 /// One path command on the 24-unit icon grid (y down).
 public enum PathOp: Sendable, Hashable {
@@ -68,13 +69,20 @@ public struct IconDrawing: Sendable, Hashable {
     /// stroke, in drawing order: each fill as-is, each stroke converted to its
     /// outline. Fill every path with the non-zero winding rule. This is the one
     /// drawing routine: `draw(in:size:strokeWidth:)` and the SwiftUI `Icon` both
-    /// fill these paths, so the two renderers cannot diverge.
+    /// fill these paths, so the two renderers cannot diverge. Built once per
+    /// (drawing, size, stroke) and then served from `InkCache.shared`, so Canvas
+    /// redraws do not re-stroke every shape.
     func inkPaths(size: CGFloat, strokeWidth: CGFloat) -> [CGPath] {
+        InkCache.shared.paths(for: self, size: size, strokeWidth: strokeWidth)
+    }
+
+    /// `inkPaths` without the cache.
+    func buildInkPaths(size: CGFloat, strokeWidth: CGFloat) -> [CGPath] {
         var out: [CGPath] = []
         for shape in shapes {
             let path = path(of: shape, size: size)
             if shape.paint != .stroke {
-                out.append(path)
+                out.append(path.copy() ?? path)
             }
             if shape.paint != .fill {
                 out.append(path.copy(strokingWithWidth: strokeWidth * shape.weight,
@@ -114,5 +122,55 @@ extension IconShape.Join {
         case .round: return .round
         case .bevel: return .bevel
         }
+    }
+}
+
+/// Built ink paths keyed by (drawing, size, stroke width). Thread-safe; when it
+/// holds `limit` entries it is emptied before the next insert, so it stays
+/// bounded (the apps use about 107 icons at a few sizes each).
+struct InkCache: Sendable {
+    static let shared = InkCache(limit: 512)
+
+    private struct Key: Hashable, Sendable {
+        let drawing: IconDrawing
+        let size: CGFloat
+        let strokeWidth: CGFloat
+    }
+
+    /// Immutable CGPaths, shared read-only between threads.
+    private struct Paths: @unchecked Sendable {
+        let paths: [CGPath]
+    }
+
+    let limit: Int
+    private let store = OSAllocatedUnfairLock<[Key: Paths]>(initialState: [:])
+
+    init(limit: Int) {
+        precondition(limit > 0, "limit must be positive")
+        self.limit = limit
+    }
+
+    var count: Int {
+        store.withLock { $0.count }
+    }
+
+    func paths(for drawing: IconDrawing, size: CGFloat, strokeWidth: CGFloat) -> [CGPath] {
+        let key = Key(drawing: drawing, size: size, strokeWidth: strokeWidth)
+        if let hit = store.withLock({ $0[key] }) {
+            return hit.paths
+        }
+        // Built outside the lock; if two threads race, the first stored value wins.
+        let built = Paths(paths: drawing.buildInkPaths(size: size, strokeWidth: strokeWidth))
+        let limit = self.limit
+        return store.withLock { cache in
+            if let winner = cache[key] {
+                return winner
+            }
+            if cache.count >= limit {
+                cache.removeAll(keepingCapacity: true)
+            }
+            cache[key] = built
+            return built
+        }.paths
     }
 }
