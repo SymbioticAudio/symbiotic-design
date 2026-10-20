@@ -1,0 +1,43 @@
+# MIT licence: see LICENSE.
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode (Swift 6.2 or later)
+        run: |
+          sudo xcode-select -s /Applications/Xcode_26.0.app
+          swift --version
+          xcrun --show-sdk-version
+          python3 --version
+
+      - name: Generated files match the sources
+        run: |
+          python3 tools/generate.py
+          python3 tools/contact_sheet.py
+          git status --porcelain
+          test -z "$(git status --porcelain)"
+
+      - name: Python tests
+        run: python3 -m unittest discover -s tools/tests -v
+
+      - name: Swift build and tests
+        run: |
+          scripts/swift.sh build
+          scripts/swift.sh test
+
+      - name: MIT products build without SymbioticBrand (what a fork builds)
+        run: |
+          scratch="$(mktemp -d)/build"
+          swift build --package-path . --scratch-path "$scratch" --product SymbioticTokens
+          swift build --package-path . --scratch-path "$scratch" --product SymbioticIcons
