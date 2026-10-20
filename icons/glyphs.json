@@ -13,7 +13,8 @@
     "col": 2,
     "description": "Circle containing three short pin marks and a vertical bar, like a DIN socket face",
     "suggestedRole": "MIDI port / connector",
-    "confidence": "medium"
+    "confidence": "medium",
+    "designerName": "virus"
   },
   {
     "id": "glyph-03",
@@ -21,7 +22,8 @@
     "col": 3,
     "description": "Small ball on a stem rising from a parallelogram plate (joystick)",
     "suggestedRole": "XY pad / joystick / controller",
-    "confidence": "medium"
+    "confidence": "medium",
+    "designerName": "joystick"
   },
   {
     "id": "glyph-04",
@@ -53,7 +55,8 @@
     "col": 7,
     "description": "Circle with two quarter-arc waves radiating to its upper right",
     "suggestedRole": "send / output signal",
-    "confidence": "medium"
+    "confidence": "medium",
+    "designerName": "echo"
   },
   {
     "id": "glyph-08",
@@ -61,7 +64,8 @@
     "col": 8,
     "description": "Square, triangle, circle and X arranged in a diamond (game-pad buttons)",
     "suggestedRole": "controller / gamepad mapping",
-    "confidence": "medium"
+    "confidence": "medium",
+    "designerName": "ps"
   },
   {
     "id": "glyph-09",
@@ -133,7 +137,8 @@
     "col": 2,
     "description": "Five equal horizontal lines stacked evenly",
     "suggestedRole": "menu / list",
-    "confidence": "medium"
+    "confidence": "medium",
+    "designerName": "stafflines"
   },
   {
     "id": "glyph-18",
@@ -181,7 +186,8 @@
     "col": 8,
     "description": "Hooked open curve that joins a small ring at its lower right (ring is filled in the white artwork)",
     "suggestedRole": "left half of a gamepad / headphones (left); mirrored pair with glyph-24",
-    "confidence": "confirmed by owner"
+    "confidence": "confirmed by owner",
+    "designerName": "controller"
   },
   {
     "id": "glyph-24",
@@ -189,7 +195,8 @@
     "col": 9,
     "description": "Half-disc outline facing right beside a larger open arc (half-disc is filled in the white artwork)",
     "suggestedRole": "right half of a gamepad / headphones (right); exact mirror of glyph-23",
-    "confidence": "confirmed by owner"
+    "confidence": "confirmed by owner",
+    "designerName": "controller"
   },
   {
     "id": "glyph-25",
@@ -197,7 +204,8 @@
     "col": 1,
     "description": "Bass-clef curve with two small rings to its right",
     "suggestedRole": "bass / low",
-    "confidence": "high"
+    "confidence": "high",
+    "designerName": "bassclef"
   },
   {
     "id": "glyph-26",
@@ -277,7 +285,8 @@
     "col": 4,
     "description": "Two offset horizontal bars joined by two parallel diagonals (stepped Z)",
     "suggestedRole": "natural (note accidental annotation)",
-    "confidence": "confirmed by owner"
+    "confidence": "confirmed by owner",
+    "designerName": "natural"
   },
   {
     "id": "glyph-36",
@@ -325,6 +334,7 @@
     "col": 10,
     "description": "Treble-like knot: arc, loop and slanted stem ending in a lower hook",
     "suggestedRole": "treble / high",
-    "confidence": "medium"
+    "confidence": "medium",
+    "designerName": "gclef"
   }
 ]

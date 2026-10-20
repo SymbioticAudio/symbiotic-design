@@ -102,3 +102,21 @@ class Tokens(Scratch):
         self.assertEqual(result.returncode, 1)
         self.assertIn("error: tokens.json: brand.gold: brand is constant", result.stderr)
         self.assertEqual(self.snapshot(), before)
+
+
+class Roles(Scratch):
+    def test_coverage_report_is_written(self):
+        (self.root / "icons" / "coverage.md").unlink()
+        result = self.run_generate()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        text = (self.root / "icons" / "coverage.md").read_text(encoding="utf-8")
+        self.assertIn("## Brief for the designer", text)
+        self.assertIn("## Glyphs not assigned to any role", text)
+
+    def test_unconfirmed_glyph_is_rejected(self):
+        def map_guess(d):
+            d["roles"].append({"id": "net.wireless", "standard": "play", "brand": "glyph-06", "label": "Wireless"})
+        self.edit_json("icons/roles.json", map_guess)
+        result = self.run_generate()
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("glyph-06 is not confirmed by the owner", result.stderr)
