@@ -399,7 +399,7 @@
     "id": "drum-grid",
     "name": "Drum grid",
     "category": "editor",
-    "description": "Three by three step grid with a few steps on (drum pattern)"
+    "description": "3 × 3 step grid: three steps lit, the rest as dots"
   },
   {
     "id": "treble-clef",
@@ -627,7 +627,7 @@
     "id": "layer",
     "name": "Layer",
     "category": "audio",
-    "description": "Two boxes stacked one behind the other (two parts over the same keys)"
+    "description": "Two full-width boxes stacked one above the other (two parts over the same keys)"
   },
   {
     "id": "split",
