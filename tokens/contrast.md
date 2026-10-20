@@ -17,6 +17,7 @@ palettes are not final.
 | `text.secondary` | `surface.panel` | body | 4.00:1 | 4.5:1 | WARN |
 | `text.inverse` | `surface.selection` | body | 5.42:1 | 4.5:1 | pass |
 | `accent.onAccent` | `accent.accent` | body | 4.01:1 | 4.5:1 | WARN |
+| `accent.accent` | `surface.panel` | body | 4.01:1 | 4.5:1 | WARN |
 | `state.record` | `surface.panel` | icon | 3.54:1 | 3:1 | pass |
 | `state.warning` | `surface.window` | icon | 1.86:1 | 3:1 | WARN |
 | `graph.line` | `surface.inset` | icon | 3.12:1 | 3:1 | pass |
@@ -34,6 +35,7 @@ palettes are not final.
 | `text.secondary` | `surface.panel` | body | 5.89:1 | 4.5:1 | pass |
 | `text.inverse` | `surface.selection` | body | 6.35:1 | 4.5:1 | pass |
 | `accent.onAccent` | `accent.accent` | body | 3.64:1 | 4.5:1 | WARN |
+| `accent.accent` | `surface.panel` | body | 4.57:1 | 4.5:1 | pass |
 | `state.record` | `surface.panel` | icon | 4.89:1 | 3:1 | pass |
 | `state.warning` | `surface.window` | icon | 6.23:1 | 3:1 | pass |
 | `graph.line` | `surface.inset` | icon | 4.04:1 | 3:1 | pass |
@@ -51,6 +53,7 @@ palettes are not final.
 | `text.secondary` | `surface.panel` | body | 7.00:1 | 4.5:1 | pass |
 | `text.inverse` | `surface.selection` | body | 4.49:1 | 4.5:1 | WARN |
 | `accent.onAccent` | `accent.accent` | body | 4.49:1 | 4.5:1 | WARN |
+| `accent.accent` | `surface.panel` | body | 4.49:1 | 4.5:1 | WARN |
 | `state.record` | `surface.panel` | icon | 4.63:1 | 3:1 | pass |
 | `state.warning` | `surface.window` | icon | 2.08:1 | 3:1 | WARN |
 | `graph.line` | `surface.inset` | icon | 3.18:1 | 3:1 | pass |
@@ -68,6 +71,7 @@ palettes are not final.
 | `text.secondary` | `surface.panel` | body | 5.50:1 | 4.5:1 | pass |
 | `text.inverse` | `surface.selection` | body | 1.84:1 | 4.5:1 | WARN |
 | `accent.onAccent` | `accent.accent` | body | 9.86:1 | 4.5:1 | pass |
+| `accent.accent` | `surface.panel` | body | 7.33:1 | 4.5:1 | pass |
 | `state.record` | `surface.panel` | icon | 3.76:1 | 3:1 | pass |
 | `state.warning` | `surface.window` | icon | 9.33:1 | 3:1 | pass |
 | `graph.line` | `surface.inset` | icon | 10.59:1 | 3:1 | pass |
@@ -85,6 +89,7 @@ palettes are not final.
 | `text.secondary` | `surface.panel` | body | 12.63:1 | 4.5:1 | pass |
 | `text.inverse` | `surface.selection` | body | 9.28:1 | 4.5:1 | pass |
 | `accent.onAccent` | `accent.accent` | body | 4.99:1 | 4.5:1 | pass |
+| `accent.accent` | `surface.panel` | body | 4.99:1 | 4.5:1 | pass |
 | `state.record` | `surface.panel` | icon | 5.62:1 | 3:1 | pass |
 | `state.warning` | `surface.window` | icon | 3.52:1 | 3:1 | pass |
 | `graph.line` | `surface.inset` | icon | 4.53:1 | 3:1 | pass |

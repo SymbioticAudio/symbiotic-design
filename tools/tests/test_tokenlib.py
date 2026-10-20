@@ -152,6 +152,25 @@ class Validation(unittest.TestCase):
                 self.assertTrue(any(needle in p for p in self.problems(d)), needle)
 
 
+    def test_unhashable_values_are_reported_not_crashed_on(self):
+        cases = [
+            (lambda d: d["contrast"][0].__setitem__("use", [1]), "contrast[0]: use must be body, large or icon"),
+            (lambda d: d["contrast"][0].__setitem__("text", ["text.primary"]),
+             "contrast[0]: ['text.primary'] is not a colour token"),
+            (lambda d: d["themes"][0].__setitem__("id", ["x"]),
+             "theme id ['x'] must be lower-case words joined by hyphens"),
+            (lambda d: d["themes"][0].__setitem__("appearance", {"x": 1}),
+             "theme classic-light: appearance must be light or dark"),
+            (lambda d: d["tokens"]["spacing"].__setitem__("kind", ["points"]),
+             "token group 'spacing': kind ['points'] not one of color, points, font"),
+        ]
+        for i, (mutate, message) in enumerate(cases):
+            with self.subTest(case=i):
+                d = minimal()
+                mutate(d)
+                self.assertIn(message, self.problems(d))
+
+
 def two_themes_with_brand():
     d = minimal()
     d["tokens"]["brand"] = {"kind": "color", "constant": True, "items": {"gold": "Brand gold"}}
@@ -279,6 +298,12 @@ class RepositoryTokens(unittest.TestCase):
             colour = value["fallback"] if isinstance(value, dict) else value
             with self.subTest(token=token):
                 self.assertNotIn(colour.upper(), site)
+
+    def test_accent_text_is_checked_on_panels_only(self):
+        pairs = [(p["text"], p["on"], p["use"]) for p in self.data["contrast"]]
+        self.assertIn(("accent.accent", "surface.panel", "body"), pairs)
+        self.assertNotIn("surface.window", [on for text, on, _ in pairs if text == "accent.accent"])
+        self.assertIn("not on the window", self.data["description"])
 
     def test_symbiotic_is_not_the_default_light_theme(self):
         lights = [th["id"] for th in self.data["themes"] if th["appearance"] == "light"]

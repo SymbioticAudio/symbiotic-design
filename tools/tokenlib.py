@@ -54,6 +54,11 @@ def _one_line(text):
             and not any(unicodedata.category(ch) in ("Cc", "Zl", "Zp") for ch in text))
 
 
+def _is_one_of(value, choices):
+    """`value in choices` for JSON values; a list or object (unhashable) is never a member."""
+    return isinstance(value, str) and value in choices
+
+
 def _is_number(v):
     return isinstance(v, (int, float)) and not isinstance(v, bool)
 
@@ -104,7 +109,7 @@ def validate(data):
             problems.append(f"token group {group!r}: constant must be true or false")
         elif spec.get("constant"):
             constant.add(group)
-        if spec["kind"] not in KINDS:
+        if not _is_one_of(spec["kind"], KINDS):
             problems.append(f"token group {group!r}: kind {spec['kind']!r} not one of color, points, font")
         if not isinstance(spec["items"], dict) or not spec["items"]:
             problems.append(f"token group {group!r}: 'items' must be a non-empty object")
@@ -131,8 +136,9 @@ def validate(data):
             problems.append(f"theme id {tid!r} must be lower-case words joined by hyphens")
         elif tid in seen:
             problems.append(f"theme id {tid!r} is used twice")
-        seen.add(tid)
-        if theme.get("appearance") not in APPEARANCES:
+        else:
+            seen.add(tid)
+        if not _is_one_of(theme.get("appearance"), APPEARANCES):
             problems.append(f"theme {tid}: appearance must be light or dark")
         if not isinstance(theme.get("placeholder", False), bool):
             problems.append(f"theme {tid}: placeholder must be true or false")
@@ -178,9 +184,9 @@ def validate(data):
             problems.append(f"contrast[{i}] needs exactly 'text', 'on' and 'use'")
             continue
         for key in ("text", "on"):
-            if kinds.get(pair[key]) != "color":
+            if not isinstance(pair[key], str) or kinds.get(pair[key]) != "color":
                 problems.append(f"contrast[{i}]: {pair[key]!r} is not a colour token")
-        if pair["use"] not in USES:
+        if not _is_one_of(pair["use"], USES):
             problems.append(f"contrast[{i}]: use must be body, large or icon")
     if problems:
         raise TokenError(problems)

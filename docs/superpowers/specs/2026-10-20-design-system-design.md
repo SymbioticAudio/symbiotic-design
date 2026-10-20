@@ -17,7 +17,7 @@ Owner decisions this spec rests on:
 - Branded artwork © Westlee Latta, all rights reserved (`ASSETS-LICENSE`); code, tokens and standard icons MIT (`LICENSE`). Credit: original glyph designs by Clayton Hibbert.
 - Standard (industry-conventional) icons are drawn in-house in the house style; SF Symbols are never shipped as assets.
 
-Out of scope: wiring the package into VizDAW (a later VizDAW plan) or EG13 (its own session), the final palettes of the four themes (SP7), and new branded glyphs (the owner's designer draws those from `icons/coverage.md`).
+Out of scope: wiring the package into VizDAW (a later VizDAW plan) or EG13 (its own session), the final palettes of the five themes (VizDAW SP7 designs them; `symbiotic` is the owner's and already has real values), and new branded glyphs (the owner's designer draws those from `icons/coverage.md`).
 
 ## 2. Design tokens
 
