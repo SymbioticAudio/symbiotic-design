@@ -8,8 +8,14 @@ VizDAW and EG13, which are GPL-3.0):
 
   - source-art/          (master artwork, Photoshop files)
   - icons/svg/glyph-*    (glyph icons redrawn from the master artwork)
+  - icons/glyphs.json    (descriptions and the designer's names of the glyphs)
+  - icons/coverage.md    (generated report that describes the glyphs)
   - icons/contact-sheet.html (embeds the glyph artwork; its glyph section
     remains all rights reserved)
+  - Sources/SymbioticBrand/ (the glyphs as Swift drawing code, generated and
+    hand-written)
+  - Tests/SymbioticBrandTests/ (brand tests and glyph reference PNGs, when
+    added)
   - logo/                (SymbioticAudio logo, when added)
   - any PDF, PNG or other rendering generated from the files above
 

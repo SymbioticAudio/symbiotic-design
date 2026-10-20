@@ -2,8 +2,8 @@
 """Validate the design sources and write every generated file.
 
 Usage: python3 tools/generate.py
-Writes tokens/contrast.md, icons/coverage.md, Sources/SymbioticTokens/Generated/
-and Sources/SymbioticIcons/Generated/.
+Writes tokens/contrast.md, icons/coverage.md and Sources/*/Generated/, and
+restamps the ASSETS-LICENSE notice at the top of hand-written SymbioticBrand Swift.
 Exit status 1 (and nothing written) if a source is invalid. If a role's
 standard icon has no SVG yet, icons/coverage.md is still written (it lists
 what to draw) but no Swift is.
@@ -16,6 +16,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 
 import rolelib  # noqa: E402
 import svgsubset  # noqa: E402
+import swiftgen_brand  # noqa: E402
 import swiftgen_icons  # noqa: E402
 import swiftgen_tokens  # noqa: E402
 import tokenlib  # noqa: E402
@@ -64,9 +65,18 @@ def icons_step():
     files = {"icons/coverage.md": rolelib.coverage_markdown(roles, standard_names, glyphs)}
     missing = rolelib.missing_standard(roles, standard_names)
     standard = parse_dir(ROOT / "icons" / "standard", standard_names)
+    brand = parse_dir(ROOT / "icons" / "svg", [g["id"] for g in glyphs])
     if not missing:
         files.update(swiftgen_icons.generate(standard, roles))
-    return files, [swiftgen_icons.OUT], missing
+        assets_license = (ROOT / "ASSETS-LICENSE").read_text(encoding="utf-8")
+        files.update(swiftgen_brand.generate(brand, roles, assets_license))
+        for path in sorted((ROOT / swiftgen_brand.PRODUCT).glob("*.swift")):
+            rel = str(path.relative_to(ROOT))
+            try:
+                files[rel] = swiftgen_brand.restamp(path.read_text(encoding="utf-8"), assets_license)
+            except ValueError as e:
+                raise svgsubset.SvgError(f"{rel}: {e}") from None
+    return files, [swiftgen_icons.OUT, swiftgen_brand.OUT], missing
 
 
 def main():

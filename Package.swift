@@ -11,11 +11,14 @@ let package = Package(
     products: [
         .library(name: "SymbioticTokens", targets: ["SymbioticTokens"]),
         .library(name: "SymbioticIcons", targets: ["SymbioticIcons"]),
+        .library(name: "SymbioticBrand", targets: ["SymbioticBrand"]),
     ],
     targets: [
         .target(name: "SymbioticTokens"),
         .target(name: "SymbioticIcons", dependencies: ["SymbioticTokens"]),
+        .target(name: "SymbioticBrand", dependencies: ["SymbioticIcons"]),
         .testTarget(name: "SymbioticTokensTests", dependencies: ["SymbioticTokens"]),
         .testTarget(name: "SymbioticIconsTests", dependencies: ["SymbioticIcons", "SymbioticTokens"]),
+        .testTarget(name: "SymbioticBrandTests", dependencies: ["SymbioticBrand", "SymbioticIcons", "SymbioticTokens"]),
     ]
 )
