@@ -1,0 +1,330 @@
+[
+  {
+    "id": "glyph-01",
+    "row": 1,
+    "col": 1,
+    "description": "Circle hanging from a vertical stem capped by a short horizontal bar (pendant)",
+    "suggestedRole": "insert / attach",
+    "confidence": "low"
+  },
+  {
+    "id": "glyph-02",
+    "row": 1,
+    "col": 2,
+    "description": "Circle containing three short pin marks and a vertical bar, like a DIN socket face",
+    "suggestedRole": "MIDI port / connector",
+    "confidence": "medium"
+  },
+  {
+    "id": "glyph-03",
+    "row": 1,
+    "col": 3,
+    "description": "Small ball on a stem rising from a parallelogram plate (joystick)",
+    "suggestedRole": "XY pad / joystick / controller",
+    "confidence": "medium"
+  },
+  {
+    "id": "glyph-04",
+    "row": 1,
+    "col": 4,
+    "description": "Large circle with a short horizontal handle ending in a small ring",
+    "suggestedRole": "zoom / inspect",
+    "confidence": "low"
+  },
+  {
+    "id": "glyph-05",
+    "row": 1,
+    "col": 5,
+    "description": "Open caret with a detached horizontal dash and short diagonal below (broken arrow)",
+    "suggestedRole": "envelope (ADSR / envelope editor)",
+    "confidence": "confirmed by owner"
+  },
+  {
+    "id": "glyph-06",
+    "row": 1,
+    "col": 6,
+    "description": "Two concentric arches above a short vertical mast (antenna broadcasting)",
+    "suggestedRole": "wireless / network / broadcast",
+    "confidence": "medium"
+  },
+  {
+    "id": "glyph-07",
+    "row": 1,
+    "col": 7,
+    "description": "Circle with two quarter-arc waves radiating to its upper right",
+    "suggestedRole": "send / output signal",
+    "confidence": "medium"
+  },
+  {
+    "id": "glyph-08",
+    "row": 1,
+    "col": 8,
+    "description": "Square, triangle, circle and X arranged in a diamond (game-pad buttons)",
+    "suggestedRole": "controller / gamepad mapping",
+    "confidence": "medium"
+  },
+  {
+    "id": "glyph-09",
+    "row": 2,
+    "col": 1,
+    "description": "Two equal circles joined by a short horizontal bar (spectacles)",
+    "suggestedRole": "view / preview / monitor",
+    "confidence": "low"
+  },
+  {
+    "id": "glyph-10",
+    "row": 2,
+    "col": 2,
+    "description": "Three overlapping circles in a triangular cluster (Venn)",
+    "suggestedRole": "mix / blend / group",
+    "confidence": "medium"
+  },
+  {
+    "id": "glyph-11",
+    "row": 2,
+    "col": 3,
+    "description": "Two parallel zigzag lines",
+    "suggestedRole": "modulation / waveform",
+    "confidence": "medium"
+  },
+  {
+    "id": "glyph-12",
+    "row": 2,
+    "col": 4,
+    "description": "Vertical stem with a looping stroke from its top that crosses and flicks right (script 4)",
+    "suggestedRole": "clef — editor mode (alternate notation view)",
+    "confidence": "confirmed by owner"
+  },
+  {
+    "id": "glyph-13",
+    "row": 2,
+    "col": 5,
+    "description": "Large open spiral hook that ends in a small closed loop",
+    "suggestedRole": "clef — editor mode",
+    "confidence": "confirmed by owner"
+  },
+  {
+    "id": "glyph-14",
+    "row": 2,
+    "col": 6,
+    "description": "Upright triangle beside an inverted triangle",
+    "suggestedRole": "up / down (increment / decrement)",
+    "confidence": "medium"
+  },
+  {
+    "id": "glyph-15",
+    "row": 2,
+    "col": 7,
+    "description": "Wide bowl-shaped arc with a small quarter arc above-left of centre",
+    "suggestedRole": "fermata (hold / sustain annotation)",
+    "confidence": "confirmed by owner"
+  },
+  {
+    "id": "glyph-16",
+    "row": 3,
+    "col": 1,
+    "description": "Upright triangle enclosing a circle near its centre",
+    "suggestedRole": "warning / alert",
+    "confidence": "low"
+  },
+  {
+    "id": "glyph-17",
+    "row": 3,
+    "col": 2,
+    "description": "Five equal horizontal lines stacked evenly",
+    "suggestedRole": "menu / list",
+    "confidence": "medium"
+  },
+  {
+    "id": "glyph-18",
+    "row": 3,
+    "col": 3,
+    "description": "Circle with a stem and right-pointing flag, beside a second higher circle (note pair)",
+    "suggestedRole": "notes / MIDI / score",
+    "confidence": "medium"
+  },
+  {
+    "id": "glyph-19",
+    "row": 3,
+    "col": 4,
+    "description": "Open downward chevron with a detached vertical stem above it (down arrow)",
+    "suggestedRole": "down / import / download",
+    "confidence": "high"
+  },
+  {
+    "id": "glyph-20",
+    "row": 3,
+    "col": 5,
+    "description": "Open upward chevron with a detached vertical stem below it (up arrow)",
+    "suggestedRole": "up / export / upload",
+    "confidence": "high"
+  },
+  {
+    "id": "glyph-21",
+    "row": 3,
+    "col": 6,
+    "description": "Circle with four short diagonal rays at the corners (sun)",
+    "suggestedRole": "brightness / light theme",
+    "confidence": "medium"
+  },
+  {
+    "id": "glyph-22",
+    "row": 3,
+    "col": 7,
+    "description": "Large circle with a short horizontal dash below centre",
+    "suggestedRole": "remove / minus",
+    "confidence": "low"
+  },
+  {
+    "id": "glyph-23",
+    "row": 3,
+    "col": 8,
+    "description": "Hooked open curve that joins a small ring at its lower right (ring is filled in the white artwork)",
+    "suggestedRole": "left half of a gamepad / headphones (left); mirrored pair with glyph-24",
+    "confidence": "confirmed by owner"
+  },
+  {
+    "id": "glyph-24",
+    "row": 3,
+    "col": 9,
+    "description": "Half-disc outline facing right beside a larger open arc (half-disc is filled in the white artwork)",
+    "suggestedRole": "right half of a gamepad / headphones (right); exact mirror of glyph-23",
+    "confidence": "confirmed by owner"
+  },
+  {
+    "id": "glyph-25",
+    "row": 4,
+    "col": 1,
+    "description": "Bass-clef curve with two small rings to its right",
+    "suggestedRole": "bass / low",
+    "confidence": "high"
+  },
+  {
+    "id": "glyph-26",
+    "row": 4,
+    "col": 2,
+    "description": "Square centred inside a circle",
+    "suggestedRole": "stop",
+    "confidence": "high"
+  },
+  {
+    "id": "glyph-27",
+    "row": 4,
+    "col": 3,
+    "description": "Open circle with a gap at the top and a vertical bar through the gap (power symbol)",
+    "suggestedRole": "power",
+    "confidence": "high"
+  },
+  {
+    "id": "glyph-28",
+    "row": 4,
+    "col": 4,
+    "description": "Vertical mast passing through two concentric arches",
+    "suggestedRole": "send / broadcast / routing",
+    "confidence": "low"
+  },
+  {
+    "id": "glyph-29",
+    "row": 4,
+    "col": 5,
+    "description": "Circle on a short stem with a diagonal tick at its upper left",
+    "suggestedRole": "bus / send",
+    "confidence": "confirmed by owner"
+  },
+  {
+    "id": "glyph-30",
+    "row": 4,
+    "col": 6,
+    "description": "Three equal touching circles in a row",
+    "suggestedRole": "more / chain",
+    "confidence": "medium"
+  },
+  {
+    "id": "glyph-31",
+    "row": 4,
+    "col": 7,
+    "description": "Y shape: vertical stem with two diagonal arms (fork)",
+    "suggestedRole": "split / routing",
+    "confidence": "medium"
+  },
+  {
+    "id": "glyph-32",
+    "row": 5,
+    "col": 1,
+    "description": "Open tray (U-bracket) with a small square floating above it",
+    "suggestedRole": "load / import / drop",
+    "confidence": "low"
+  },
+  {
+    "id": "glyph-33",
+    "row": 5,
+    "col": 2,
+    "description": "Two small rings each with a partial arc, arranged point-symmetrically",
+    "suggestedRole": "sync / cycle / stereo",
+    "confidence": "low"
+  },
+  {
+    "id": "glyph-34",
+    "row": 5,
+    "col": 3,
+    "description": "Two vertical bars with a small box attached to the left of the first",
+    "suggestedRole": "repeat / coda",
+    "confidence": "confirmed by owner"
+  },
+  {
+    "id": "glyph-35",
+    "row": 5,
+    "col": 4,
+    "description": "Two offset horizontal bars joined by two parallel diagonals (stepped Z)",
+    "suggestedRole": "natural (note accidental annotation)",
+    "confidence": "confirmed by owner"
+  },
+  {
+    "id": "glyph-36",
+    "row": 5,
+    "col": 5,
+    "description": "C-shaped arc with a short bar above it and a vertical bar inside (cent-sign-like)",
+    "suggestedRole": "tune / cents",
+    "confidence": "low"
+  },
+  {
+    "id": "glyph-37",
+    "row": 5,
+    "col": 6,
+    "description": "Eight-spoked asterisk",
+    "suggestedRole": "effects / FX",
+    "confidence": "medium"
+  },
+  {
+    "id": "glyph-38",
+    "row": 5,
+    "col": 7,
+    "description": "Ring on top of a long stem with two hooks curving up to the right",
+    "suggestedRole": "musical note — note editing",
+    "confidence": "confirmed by owner"
+  },
+  {
+    "id": "glyph-39",
+    "row": 5,
+    "col": 8,
+    "description": "Stick figure with an isometric cube for a head",
+    "suggestedRole": "brand: SymbioticAudio organisation logo (reserved, not a UI action)",
+    "confidence": "confirmed by owner"
+  },
+  {
+    "id": "glyph-40",
+    "row": 5,
+    "col": 9,
+    "description": "Large circle with a smaller circle inside, tangent at the right (crescent)",
+    "suggestedRole": "loop / cycle modes",
+    "confidence": "confirmed by owner"
+  },
+  {
+    "id": "glyph-41",
+    "row": 5,
+    "col": 10,
+    "description": "Treble-like knot: arc, loop and slanted stem ending in a lower hook",
+    "suggestedRole": "treble / high",
+    "confidence": "medium"
+  }
+]

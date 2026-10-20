@@ -1,0 +1,21 @@
+SymbioticAudio branded artwork
+Copyright (c) 2006-2026 Westlee Latta. All rights reserved.
+
+The following files are proprietary artwork and brand identity of
+SymbioticAudio. They are NOT licensed under the MIT licence in LICENSE, nor
+under any open-source licence of an application that uses them (including
+VizDAW and EG13, which are GPL-3.0):
+
+  - source-art/          (master artwork, Photoshop files)
+  - icons/svg/glyph-*    (glyph icons redrawn from the master artwork)
+  - icons/contact-sheet.html (embeds the glyph artwork)
+  - logo/                (SymbioticAudio logo, when added)
+  - any PDF, PNG or other rendering generated from the files above
+
+No permission is granted to copy, modify, distribute or use this artwork,
+in whole or in part, except in official SymbioticAudio releases or with the
+copyright holder's prior written permission. Forks and redistributions of
+SymbioticAudio's open-source applications must remove this artwork and use
+their own or the applications' fallback icons.
+
+Contact: symbioticaudio@proton.me
