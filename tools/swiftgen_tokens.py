@@ -34,13 +34,64 @@ def value_literal(kind, value, appearance):
     return f"TypeStyle(size: {number(value['size'])}, weight: .{value['weight']})"
 
 
-def initialiser(fields, indent):
-    """A public memberwise init over [(name, type, default or None)]."""
+def initialiser(fields, indent, pinned=()):
+    """A public memberwise init over [(name, type, default or None)].
+
+    Fields named in `pinned` are colour groups, stored with their system colours
+    resolved in the init's `appearance` parameter (review M3).
+    """
     pad = " " * indent
     params = ",\n".join(f"{pad}    {identifier(n)}: {t}" + (f" = {d}" if d is not None else "")
                         for n, t, d in fields)
-    body = "".join(f"{pad}    self.{identifier(n)} = {identifier(n)}\n" for n, _, _ in fields)
+    body = "".join(f"{pad}    self.{identifier(n)} = {identifier(n)}"
+                   + (".pinned(to: appearance)" if n in pinned else "") + "\n" for n, _, _ in fields)
     return [f"{pad}public init(\n{params}\n{pad}) {{\n{body}{pad}}}"]
+
+
+def pinned_method(group, spec):
+    """`func pinned(to:)` for a colour group: the same colours, system ones resolved in `appearance`."""
+    name = struct_name(group, spec["kind"])
+    args = ",\n".join(f"                {identifier(n)}: self.{identifier(n)}.pinned(to: appearance)"
+                      for n in spec["items"])
+    return ["        /// The same colours, with every system colour resolved in `appearance`.",
+            f"        public func pinned(to appearance: ThemeAppearance) -> {name} {{",
+            f"            {name}(\n{args}\n            )",
+            "        }"]
+
+
+# Top-level names a constant group's namespace must not take: this module's own types,
+# the modules of this package and the ones it imports, and common SwiftUI/AppKit/Swift types.
+RESERVED_TOP_LEVEL = {
+    "Theme", "ThemeColor", "ThemeAppearance", "TypeStyle", "FontWeight", "SystemColorName",
+    "SymbioticTokens", "SymbioticIcons", "SymbioticBrand", "SwiftUI", "AppKit", "CoreGraphics", "Foundation",
+    "Swift", "Color", "Font", "View", "Text", "Image", "Shape", "Path", "Animation", "Environment",
+    "EnvironmentValues", "ColorScheme", "NSColor", "NSFont", "NSImage", "NSAppearance", "NSView",
+    "String", "Bool", "Int", "Double", "Float", "CGFloat", "Array", "Dictionary", "Set", "Optional",
+}
+# Theme members besides the groups and the theme statics.
+THEME_MEMBERS = {"id", "appearance", "isPlaceholder", "all", "named", "standard", "init"}
+
+
+def check_names(data):
+    """Generated Swift names must not clash with each other or with existing ones (review M4)."""
+    problems = []
+    groups = data["tokens"]
+    group_props = {lower_camel(g) for g in groups}
+    for group, spec in groups.items():
+        if lower_camel(group) in THEME_MEMBERS:
+            problems.append(f"{group}: the group name clashes with Theme.{group}; rename the group")
+        if spec.get("constant") and namespace_name(group) in RESERVED_TOP_LEVEL:
+            problems.append(f"{group}: a constant group becomes the top-level Swift name "
+                            f"{namespace_name(group)}, which is already used; rename the group")
+    seen = set()
+    for theme in data["themes"]:
+        prop = lower_camel(theme["id"])
+        if prop in THEME_MEMBERS or prop in group_props or prop in seen:
+            problems.append(f"theme {theme['id']}: its Swift name Theme.{prop} clashes with another Theme "
+                            "member; rename the theme")
+        seen.add(prop)
+    if problems:
+        raise TokenError(problems)
 
 
 def check_constants(data):
@@ -74,8 +125,11 @@ def theme_swift(data):
     for name, type_name, _ in fields:
         lines.append(f"    public let {identifier(name)}: {type_name}")
     lines.append("")
+    colour_groups = {lower_camel(g) for g, spec in groups.items() if spec["kind"] == "color"}
+    lines.append("    /// System colours in the colour groups are re-pinned to `appearance`, so the theme,")
+    lines.append("    /// not where a colour was copied from, decides whether they resolve light or dark.")
     lines += initialiser([("id", "String", None), ("appearance", "ThemeAppearance", None),
-                          ("isPlaceholder", "Bool", "false")] + fields, 4)
+                          ("isPlaceholder", "Bool", "false")] + fields, 4, pinned=colour_groups)
     lines.append("}")
     lines.append("")
     lines.append("extension Theme {")
@@ -87,6 +141,9 @@ def theme_swift(data):
             lines.append(f"        public let {identifier(name)}: {SWIFT_TYPE[kind]}")
         lines.append("")
         lines += initialiser([(name, SWIFT_TYPE[kind], None) for name in spec["items"]], 8)
+        if kind == "color":
+            lines.append("")
+            lines += pinned_method(group, spec)
         lines.append("    }")
         lines.append("")
     for theme in data["themes"]:
@@ -144,6 +201,7 @@ def system_colors_swift():
 
 def generate(data):
     """{relative path: file text} for the SymbioticTokens generated sources."""
+    check_names(data)
     check_constants(data)
     return {
         f"{OUT}/Theme+Generated.swift": theme_swift(data),

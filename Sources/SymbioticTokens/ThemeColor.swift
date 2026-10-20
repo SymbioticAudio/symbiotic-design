@@ -29,6 +29,16 @@ public enum ThemeAppearance: String, Sendable, Hashable, CaseIterable {
         let highContrast = match == .accessibilityHighContrastAqua || match == .accessibilityHighContrastDarkAqua
         return nsAppearanceName(highContrast: highContrast)
     }
+
+    /// The appearance object a system colour is resolved in (review M1). If the chosen
+    /// (e.g. high-contrast) appearance cannot be made, the theme's plain light/dark is
+    /// used; the drawing appearance only as a last resort, since it may be the other mode.
+    func resolutionAppearance(
+        matching match: NSAppearance.Name?, drawing: NSAppearance,
+        named make: (NSAppearance.Name) -> NSAppearance? = { NSAppearance(named: $0) }
+    ) -> NSAppearance {
+        make(resolutionName(matching: match)) ?? make(nsAppearanceName) ?? drawing
+    }
 }
 
 /// A colour token value: an sRGB colour, or a macOS semantic colour with an sRGB fallback.
@@ -49,9 +59,19 @@ public struct ThemeColor: Sendable, Hashable {
         appearance = .light
     }
 
+    /// A system colour resolved in `appearance`. Placed in a `Theme`, it is re-pinned
+    /// to that theme's appearance, so for a theme's tokens the theme decides.
     public init(system: SystemColorName, fallback: UInt32, appearance: ThemeAppearance) {
         source = .system(system, fallback: fallback)
         self.appearance = appearance
+    }
+
+    /// This colour with a system colour resolved in `appearance`; a hex colour is returned unchanged.
+    public func pinned(to appearance: ThemeAppearance) -> ThemeColor {
+        switch source {
+        case .rgba: return self
+        case .system(let name, let fallback): return ThemeColor(system: name, fallback: fallback, appearance: appearance)
+        }
     }
 
     /// The sRGB value written in tokens.json (the fallback for a system colour), as 0...1 components.
@@ -75,9 +95,8 @@ public struct ThemeColor: Sendable, Hashable {
             return NSColor(name: nil) { drawing in
                 // Light/dark comes from the theme; Increase Contrast comes from where it is drawn.
                 let match = drawing.bestMatch(from: ThemeAppearance.resolutionCandidates)
-                let pinned = themeAppearance.resolutionName(matching: match)
+                let target = themeAppearance.resolutionAppearance(matching: match, drawing: drawing)
                 var resolved = NSColor.black
-                let target = NSAppearance(named: pinned) ?? drawing
                 target.performAsCurrentDrawingAppearance {
                     resolved = name.nsColor.usingColorSpace(.sRGB) ?? name.nsColor
                 }

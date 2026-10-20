@@ -11,10 +11,21 @@ root="$(cd "$(dirname "$0")/.." && pwd)"
 cmd="$1"
 shift
 clt="/Library/Developer/CommandLineTools"
-if [[ "${DEVELOPER_DIR:-}" != "$clt" ]]; then
+# The active developer directory: DEVELOPER_DIR if set and non-empty, else xcode-select's choice.
+dev="${DEVELOPER_DIR:-}"
+if [[ -z "$dev" ]]; then
+    dev="$(xcode-select -p 2>/dev/null || true)"
+fi
+# Ignore trailing slashes, so .../CommandLineTools/ counts as the CLT.
+while [[ "$dev" == */ ]]; do
+    dev="${dev%/}"
+done
+if [[ "$dev" != "$clt" ]]; then
     # Full Xcode (CI runners): default build system, Swift Testing in place.
+    echo "swift.sh: Xcode (${dev:-unknown developer dir}): plain swift $cmd" >&2
     exec swift "$cmd" --package-path "$root" "$@"
 fi
+echo "swift.sh: Command Line Tools: swift $cmd with the native build system" >&2
 # Command Line Tools only: the native build system, plus the paths of
 # Swift Testing, which the CLT ship outside the default search paths.
 fw="$clt/Library/Developer/Frameworks"

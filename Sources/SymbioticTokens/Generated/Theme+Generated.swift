@@ -27,6 +27,8 @@ public struct Theme: Sendable, Hashable, Identifiable {
     public let iconStroke: IconStrokeMetrics
     public let type: TypeStyles
 
+    /// System colours in the colour groups are re-pinned to `appearance`, so the theme,
+    /// not where a colour was copied from, decides whether they resolve light or dark.
     public init(
         id: String,
         appearance: ThemeAppearance,
@@ -48,15 +50,15 @@ public struct Theme: Sendable, Hashable, Identifiable {
         self.id = id
         self.appearance = appearance
         self.isPlaceholder = isPlaceholder
-        self.surface = surface
-        self.text = text
-        self.accent = accent
-        self.state = state
-        self.meter = meter
-        self.graph = graph
-        self.control = control
-        self.strip = strip
-        self.brand = brand
+        self.surface = surface.pinned(to: appearance)
+        self.text = text.pinned(to: appearance)
+        self.accent = accent.pinned(to: appearance)
+        self.state = state.pinned(to: appearance)
+        self.meter = meter.pinned(to: appearance)
+        self.graph = graph.pinned(to: appearance)
+        self.control = control.pinned(to: appearance)
+        self.strip = strip.pinned(to: appearance)
+        self.brand = brand.pinned(to: appearance)
         self.spacing = spacing
         self.radius = radius
         self.iconStroke = iconStroke
@@ -98,6 +100,19 @@ extension Theme {
             self.selection = selection
             self.focusRing = focusRing
         }
+
+        /// The same colours, with every system colour resolved in `appearance`.
+        public func pinned(to appearance: ThemeAppearance) -> SurfaceColors {
+            SurfaceColors(
+                window: self.window.pinned(to: appearance),
+                panel: self.panel.pinned(to: appearance),
+                raised: self.raised.pinned(to: appearance),
+                inset: self.inset.pinned(to: appearance),
+                separator: self.separator.pinned(to: appearance),
+                selection: self.selection.pinned(to: appearance),
+                focusRing: self.focusRing.pinned(to: appearance)
+            )
+        }
     }
 
     public struct TextColors: Sendable, Hashable {
@@ -121,6 +136,16 @@ extension Theme {
             self.disabled = disabled
             self.inverse = inverse
         }
+
+        /// The same colours, with every system colour resolved in `appearance`.
+        public func pinned(to appearance: ThemeAppearance) -> TextColors {
+            TextColors(
+                primary: self.primary.pinned(to: appearance),
+                secondary: self.secondary.pinned(to: appearance),
+                disabled: self.disabled.pinned(to: appearance),
+                inverse: self.inverse.pinned(to: appearance)
+            )
+        }
     }
 
     public struct AccentColors: Sendable, Hashable {
@@ -135,6 +160,14 @@ extension Theme {
         ) {
             self.accent = accent
             self.onAccent = onAccent
+        }
+
+        /// The same colours, with every system colour resolved in `appearance`.
+        public func pinned(to appearance: ThemeAppearance) -> AccentColors {
+            AccentColors(
+                accent: self.accent.pinned(to: appearance),
+                onAccent: self.onAccent.pinned(to: appearance)
+            )
         }
     }
 
@@ -171,6 +204,19 @@ extension Theme {
             self.error = error
             self.offline = offline
         }
+
+        /// The same colours, with every system colour resolved in `appearance`.
+        public func pinned(to appearance: ThemeAppearance) -> StateColors {
+            StateColors(
+                record: self.record.pinned(to: appearance),
+                play: self.play.pinned(to: appearance),
+                solo: self.solo.pinned(to: appearance),
+                mute: self.mute.pinned(to: appearance),
+                warning: self.warning.pinned(to: appearance),
+                error: self.error.pinned(to: appearance),
+                offline: self.offline.pinned(to: appearance)
+            )
+        }
     }
 
     public struct MeterColors: Sendable, Hashable {
@@ -198,6 +244,17 @@ extension Theme {
             self.high = high
             self.clip = clip
         }
+
+        /// The same colours, with every system colour resolved in `appearance`.
+        public func pinned(to appearance: ThemeAppearance) -> MeterColors {
+            MeterColors(
+                background: self.background.pinned(to: appearance),
+                low: self.low.pinned(to: appearance),
+                mid: self.mid.pinned(to: appearance),
+                high: self.high.pinned(to: appearance),
+                clip: self.clip.pinned(to: appearance)
+            )
+        }
     }
 
     public struct GraphColors: Sendable, Hashable {
@@ -224,6 +281,17 @@ extension Theme {
             self.grid = grid
             self.handle = handle
             self.handleSelected = handleSelected
+        }
+
+        /// The same colours, with every system colour resolved in `appearance`.
+        public func pinned(to appearance: ThemeAppearance) -> GraphColors {
+            GraphColors(
+                line: self.line.pinned(to: appearance),
+                fill: self.fill.pinned(to: appearance),
+                grid: self.grid.pinned(to: appearance),
+                handle: self.handle.pinned(to: appearance),
+                handleSelected: self.handleSelected.pinned(to: appearance)
+            )
         }
     }
 
@@ -268,6 +336,21 @@ extension Theme {
             self.dynamics = dynamics
             self.filter = filter
         }
+
+        /// The same colours, with every system colour resolved in `appearance`.
+        public func pinned(to appearance: ThemeAppearance) -> ControlColors {
+            ControlColors(
+                gain: self.gain.pinned(to: appearance),
+                eqLow: self.eqLow.pinned(to: appearance),
+                eqLowMid: self.eqLowMid.pinned(to: appearance),
+                eqHighMid: self.eqHighMid.pinned(to: appearance),
+                eqHigh: self.eqHigh.pinned(to: appearance),
+                send: self.send.pinned(to: appearance),
+                pan: self.pan.pinned(to: appearance),
+                dynamics: self.dynamics.pinned(to: appearance),
+                filter: self.filter.pinned(to: appearance)
+            )
+        }
     }
 
     public struct StripColors: Sendable, Hashable {
@@ -294,6 +377,17 @@ extension Theme {
             self.auxReturn = auxReturn
             self.bus = bus
             self.master = master
+        }
+
+        /// The same colours, with every system colour resolved in `appearance`.
+        public func pinned(to appearance: ThemeAppearance) -> StripColors {
+            StripColors(
+                channel: self.channel.pinned(to: appearance),
+                instrument: self.instrument.pinned(to: appearance),
+                auxReturn: self.auxReturn.pinned(to: appearance),
+                bus: self.bus.pinned(to: appearance),
+                master: self.master.pinned(to: appearance)
+            )
         }
     }
 
@@ -325,6 +419,18 @@ extension Theme {
             self.ink = ink
             self.paper = paper
             self.rule = rule
+        }
+
+        /// The same colours, with every system colour resolved in `appearance`.
+        public func pinned(to appearance: ThemeAppearance) -> BrandColors {
+            BrandColors(
+                gold: self.gold.pinned(to: appearance),
+                cyan: self.cyan.pinned(to: appearance),
+                cyanInk: self.cyanInk.pinned(to: appearance),
+                ink: self.ink.pinned(to: appearance),
+                paper: self.paper.pinned(to: appearance),
+                rule: self.rule.pinned(to: appearance)
+            )
         }
     }
 

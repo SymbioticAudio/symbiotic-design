@@ -42,6 +42,9 @@ import Testing
         for colour in colours {
             #expect(colour.nsColor.usingColorSpace(.sRGB) != nil)
             _ = colour.color
+            if case .system = colour.source {
+                #expect(colour.appearance == theme.appearance)
+            }
         }
         let metrics: [CGFloat] = [
             theme.spacing.xxs, theme.spacing.xs, theme.spacing.s, theme.spacing.m, theme.spacing.l, theme.spacing.xl,
@@ -122,6 +125,58 @@ import Testing
         #expect(ThemeAppearance.dark.resolutionName(matching: nil) == .darkAqua)
     }
 
+    /// Review M1: if the high-contrast appearance cannot be made, the theme's own
+    /// light/dark is used, never the appearance being drawn in.
+    @Test func missingHighContrastAppearanceFallsBackToTheThemesAppearance() {
+        let drawing = NSAppearance(named: .darkAqua)!
+        let noHighContrast: (NSAppearance.Name) -> NSAppearance? = { name in
+            name == .accessibilityHighContrastAqua || name == .accessibilityHighContrastDarkAqua
+                ? nil : NSAppearance(named: name)
+        }
+        let light = ThemeAppearance.light.resolutionAppearance(
+            matching: .accessibilityHighContrastDarkAqua, drawing: drawing, named: noHighContrast)
+        #expect(light.name == .aqua)
+        let dark = ThemeAppearance.dark.resolutionAppearance(
+            matching: .accessibilityHighContrastAqua, drawing: NSAppearance(named: .aqua)!, named: noHighContrast)
+        #expect(dark.name == .darkAqua)
+        // Only when no appearance can be made at all is the drawing appearance used.
+        let none = ThemeAppearance.light.resolutionAppearance(matching: .aqua, drawing: drawing, named: { _ in nil })
+        #expect(none === drawing)
+    }
+
+    /// Review M3: the Theme's appearance decides how its system colours resolve, even when
+    /// they were copied from a theme of the other appearance.
+    @Test func customDarkThemeResolvesCopiedSystemColoursDark() {
+        let base = Theme.classicLight
+        let dark = Theme(
+            id: "copied-dark", appearance: .dark, surface: base.surface, text: base.text, accent: base.accent,
+            state: base.state, meter: base.meter, graph: base.graph, control: base.control, strip: base.strip,
+            brand: base.brand, spacing: base.spacing, radius: base.radius, iconStroke: base.iconStroke, type: base.type)
+        func resolved(_ colour: NSColor, in name: NSAppearance.Name) -> NSColor {
+            var out = NSColor.clear
+            NSAppearance(named: name)!.performAsCurrentDrawingAppearance { out = colour.usingColorSpace(.sRGB)! }
+            return out
+        }
+        let expected = resolved(.labelColor, in: .darkAqua)
+        #expect(expected != resolved(.labelColor, in: .aqua))
+        // Drawn in a light window, the dark theme's text is still dark-mode text.
+        #expect(resolved(dark.text.primary.nsColor, in: .aqua) == expected)
+        #expect(dark.text.primary.appearance == .dark)
+        // The preset is untouched, and rebuilding a preset through the init changes nothing.
+        #expect(resolved(base.text.primary.nsColor, in: .darkAqua) == resolved(.labelColor, in: .aqua))
+        for theme in Theme.all {
+            let rebuilt = Theme(
+                id: theme.id, appearance: theme.appearance, isPlaceholder: theme.isPlaceholder,
+                surface: theme.surface, text: theme.text, accent: theme.accent, state: theme.state,
+                meter: theme.meter, graph: theme.graph, control: theme.control, strip: theme.strip,
+                brand: theme.brand, spacing: theme.spacing, radius: theme.radius, iconStroke: theme.iconStroke,
+                type: theme.type)
+            #expect(rebuilt == theme)
+        }
+        // A hex colour has no appearance to pin.
+        #expect(ThemeColor(hex: 0x336699FF).pinned(to: .dark) == ThemeColor(hex: 0x336699FF))
+    }
+
     @Test func environmentDefaultFollowsColorScheme() {
         var env = EnvironmentValues()
         env.colorScheme = .light
@@ -172,7 +227,10 @@ import Testing
         #expect(env.symbioticTheme == custom)
         #expect(env.symbioticTheme.accent.accent == ThemeColor(hex: 0xEFC031FF))
         #expect(env.symbioticTheme.accent.accent != Theme.classicLight.accent.accent)
-        #expect(env.symbioticTheme.surface == Theme.classicLight.surface)
+        // Same values, but the dark theme re-pins classic-light's system colours (review M3).
+        #expect(env.symbioticTheme.surface == Theme.classicLight.surface.pinned(to: .dark))
+        #expect(env.symbioticTheme.surface != Theme.classicLight.surface)
+        #expect(env.symbioticTheme.meter == Theme.classicLight.meter)
         #expect(env.symbioticTheme.spacing.m == 6)
         #expect(env.symbioticTheme.iconStroke.width(forSize: 24) == 1.5)
         #expect(env.symbioticTheme.type.caption.size == 9)

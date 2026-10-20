@@ -145,6 +145,49 @@ class TokensSwift(unittest.TestCase):
         self.assertEqual(ctx.exception.problems,
                          ["brand.gold: brand is constant, so it needs a fixed colour, not a system colour"])
 
+    def test_theme_init_pins_colour_groups_to_the_theme_appearance(self):
+        """Review M3: the Theme's appearance, not each colour's, decides how system colours resolve."""
+        self.assertIn("        self.text = text.pinned(to: appearance)\n", self.theme)
+        self.assertIn("        self.surface = surface.pinned(to: appearance)\n", self.theme)
+        self.assertIn("        self.spacing = spacing\n", self.theme)
+        self.assertIn("        /// The same colours, with every system colour resolved in `appearance`.\n"
+                      "        public func pinned(to appearance: ThemeAppearance) -> TextColors {\n"
+                      "            TextColors(\n"
+                      "                primary: self.primary.pinned(to: appearance)\n"
+                      "            )\n"
+                      "        }\n", self.theme)
+        self.assertNotIn("-> SpacingMetrics {", self.theme)
+
+    def problems(self, data):
+        with self.assertRaises(tokenlib.TokenError) as ctx:
+            g.generate(data)
+        return ctx.exception.problems
+
+    def test_constant_namespace_must_not_clash_with_a_swift_name(self):
+        """Review M4."""
+        for group, swift in (("theme", "Theme"), ("themeColor", "ThemeColor"), ("color", "Color"),
+                             ("symbioticTokens", "SymbioticTokens")):
+            d = minimal()
+            d["tokens"][group] = {"kind": "points", "constant": True, "items": {"x": "X"}}
+            d["themes"][0]["values"][group] = {"x": 1}
+            self.assertEqual(self.problems(d), [
+                f"{group}: a constant group becomes the top-level Swift name {swift}, which is already "
+                "used; rename the group"])
+
+    def test_group_names_must_not_clash_with_theme_properties(self):
+        for group in ("id", "appearance", "isPlaceholder", "all", "named", "standard"):
+            d = minimal()
+            d["tokens"][group] = {"kind": "points", "items": {"x": "X"}}
+            d["themes"][0]["values"][group] = {"x": 1}
+            self.assertEqual(self.problems(d), [
+                f"{group}: the group name clashes with Theme.{group}; rename the group"])
+
+    def test_theme_ids_must_not_clash_with_theme_members(self):
+        d = minimal()
+        d["themes"][0]["id"] = "text"
+        self.assertEqual(self.problems(d), [
+            "theme text: its Swift name Theme.text clashes with another Theme member; rename the theme"])
+
 
 if __name__ == "__main__":
     unittest.main()
